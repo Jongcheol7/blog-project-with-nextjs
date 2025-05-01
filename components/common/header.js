@@ -1,0 +1,55 @@
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import NavLink from "./nav-link";
+
+export default function Header() {
+  const [isDark, setIsDark] = useState(false);
+
+  const onHandleDarkMode = () => {
+    setIsDark((prev) => !prev);
+  };
+
+  // 💡 핵심: html 태그에 .dark 클래스를 붙여야 Tailwind가 인식함
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDark]);
+
+  return (
+    <header className="flex items-center justify-between px-6 py-4 pb-10">
+      <Link href={"/"}>
+        <Image src="/logo.png" width={70} height={70} alt="Logo" priority />
+      </Link>
+
+      <nav>
+        <ul className="flex gap-8 text-lg font-semibold">
+          <li>
+            <NavLink href="/blog">Blog</NavLink>
+          </li>
+          <li>
+            <NavLink href="/guest" className="hover:text-green-800">
+              Guest
+            </NavLink>
+          </li>
+          <li>
+            <NavLink href="/about" className="hover:text-green-800">
+              About
+            </NavLink>
+          </li>
+        </ul>
+      </nav>
+
+      <button
+        onClick={onHandleDarkMode}
+        className="w-15 text-base font-semibold px-1 py-1 rounded hover:bg-gray-100 dark:bg-white dark:text-black"
+      >
+        {isDark ? "☀️ Light" : "🌙 Dark"}
+      </button>
+    </header>
+  );
+}
