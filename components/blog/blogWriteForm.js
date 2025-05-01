@@ -15,15 +15,6 @@ export default function BlogWriteForm() {
   const editorRef = useRef();
   const [markdown, setMarkdown] = useState("");
 
-  useEffect(() => {
-    if (editorRef.current) {
-      console.log(
-        "초기 마크다운:",
-        editorRef.current.getInstance().getMarkdown()
-      );
-    }
-  }, [markdown]);
-
   return (
     <div className="max-w-200 mx-auto mt-10 px-4">
       <h1 className="text-2xl font-bold mb-6">글쓰기</h1>
@@ -61,7 +52,7 @@ export default function BlogWriteForm() {
           <input type="hidden" name="content" value={markdown} />
           <ToastEditor
             ref={editorRef}
-            initialValue={undefined}
+            initialValue={" "}
             previewStyle="vertical" // 'tab'도 가능
             height="400px"
             initialEditType="wysiwyg" // 또는 'markdown'
@@ -71,12 +62,6 @@ export default function BlogWriteForm() {
               setMarkdown(content);
             }}
           />
-          {/* <textarea
-            id="content"
-            name="content"
-            rows="10"
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
-          /> */}
         </div>
         <div className="flex gap-2">
           <div className="flex-1">

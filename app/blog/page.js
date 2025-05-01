@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { selectBlogs } from "../../lib/blog-db";
+import BlogLists from "../../components/blog/blogLists";
 
 export default async function BlogHomePage() {
   const posts = await selectBlogs();
@@ -11,11 +12,7 @@ export default async function BlogHomePage() {
       >
         새글작성
       </Link>
-      <ul>
-        {posts.map((post) => (
-          <li key={post.POST_NO}>{post.TITLE}</li>
-        ))}
-      </ul>
+      <BlogLists posts={posts} />
     </div>
   );
 }
