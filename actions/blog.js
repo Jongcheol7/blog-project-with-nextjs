@@ -1,15 +1,21 @@
 "use server";
 
+<<<<<<< HEAD
 import { revalidatePath } from "next/cache";
 import { uploadImage } from "../cloudinary";
 import { insertBlog, insertTags } from "../lib/blog-db";
 import { redirect } from "next/navigation";
 
+=======
+>>>>>>> 9f8ce59 (블로그 개발 시작)
 export default async function createPost(prevState, formData) {
   const title = formData.get("title");
   const content = formData.get("content");
   const image = formData.get("image");
+<<<<<<< HEAD
   const tags = formData.get("tags");
+=======
+>>>>>>> 9f8ce59 (블로그 개발 시작)
 
   let errors = [];
   if (!title || title.trim().length === 0) {
