@@ -16,6 +16,7 @@ export default function BlogWriteForm() {
   const [markdown, setMarkdown] = useState("");
   const [tags, setTags] = useState([]);
 
+<<<<<<< HEAD
   const handleTagsKeyDown = (e) => {
     console.log(e);
     const keys = ["Enter", "Tab"];
@@ -29,6 +30,8 @@ export default function BlogWriteForm() {
     }
   };
 
+=======
+>>>>>>> f4e32cc (글 저장 기능 추가, 태그 기능 개발중)
   return (
     <div className="max-w-200 mx-auto mt-10 px-4">
       <h1 className="text-2xl font-bold mb-6">글쓰기</h1>

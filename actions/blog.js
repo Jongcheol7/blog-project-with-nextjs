@@ -1,21 +1,31 @@
 "use server";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f4e32cc (글 저장 기능 추가, 태그 기능 개발중)
 import { revalidatePath } from "next/cache";
 import { uploadImage } from "../cloudinary";
 import { insertBlog, insertTags } from "../lib/blog-db";
 import { redirect } from "next/navigation";
 
+<<<<<<< HEAD
 =======
 >>>>>>> 9f8ce59 (블로그 개발 시작)
+=======
+>>>>>>> f4e32cc (글 저장 기능 추가, 태그 기능 개발중)
 export default async function createPost(prevState, formData) {
   const title = formData.get("title");
   const content = formData.get("content");
   const image = formData.get("image");
 <<<<<<< HEAD
+<<<<<<< HEAD
   const tags = formData.get("tags");
 =======
 >>>>>>> 9f8ce59 (블로그 개발 시작)
+=======
+  const tags = formData.get("tags");
+>>>>>>> f4e32cc (글 저장 기능 추가, 태그 기능 개발중)
 
   let errors = [];
   if (!title || title.trim().length === 0) {
