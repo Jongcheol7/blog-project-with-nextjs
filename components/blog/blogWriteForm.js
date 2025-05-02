@@ -14,6 +14,20 @@ export default function BlogWriteForm() {
   const [state, formAction] = useActionState(createPost, {});
   const editorRef = useRef();
   const [markdown, setMarkdown] = useState("");
+  const [tags, setTags] = useState([]);
+
+  const handleTagsKeyDown = (e) => {
+    console.log(e);
+    const keys = ["Enter", "Tab"];
+    if (keys.includes(e.key)) {
+      e.preventDefault();
+      const value = e.target.value.trim();
+      if (value && !tags.includes(value)) {
+        setTags((prev) => [...prev, value]);
+        e.target.value = "";
+      }
+    }
+  };
 
   return (
     <div className="max-w-200 mx-auto mt-10 px-4">
@@ -41,6 +55,28 @@ export default function BlogWriteForm() {
             썸네일
           </label>
           <ImagePicker />
+        </div>
+        <div>
+          <label
+            htmlFor="tags"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            태그
+          </label>
+          <div className="flex gap-2">
+            {tags.map((tag) => (
+              <span>
+                {tag}
+                <button>x</button>
+              </span>
+            ))}
+          </div>
+          <input
+            type="text"
+            name="tags"
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+            onKeyDown={handleTagsKeyDown}
+          />
         </div>
         <div>
           <label
