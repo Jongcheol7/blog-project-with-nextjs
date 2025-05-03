@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { uploadImage } from "../cloudinary";
-import { insertBlog, insertTags } from "../lib/blog-db";
+import { insertBlog, insertTags, selectCategory } from "../lib/blog-db";
 import { redirect } from "next/navigation";
 
 export default async function createPost(prevState, formData) {
@@ -10,6 +10,7 @@ export default async function createPost(prevState, formData) {
   const content = formData.get("content");
   const image = formData.get("image");
   const tags = formData.get("tags");
+  const categoryId = formData.get("category");
 
   let errors = [];
   if (!title || title.trim().length === 0) {
@@ -43,16 +44,18 @@ export default async function createPost(prevState, formData) {
     content,
     imageUrl: imageUrl,
     userId: "jclee",
+    categoryId,
   });
 
   const postNo = insertResult.lastInsertRowid;
-  const tagNames = [];
-  if (tags) {
-    tagNames = tags
-      .split(",")
-      .map((tag) => tag.trim().toLowerCase())
-      .filter((tag) => tag.length > 0);
-  }
+  const tagNames = tags
+    ? tags
+        .split(",")
+        .map((tag) => tag.trim().toLowerCase())
+        .filter((tag) => tag.length > 0)
+    : [];
+
+  console.log("tagNames: ", tagNames);
   if (tagNames && tagNames.length > 0) {
     await insertTags(tagNames, postNo);
   }
@@ -65,3 +68,8 @@ export default async function createPost(prevState, formData) {
     errors: [],
   };
 }
+
+// export async function BlogCategory() {
+//   const categories = await selectCategory();
+//   return categories;
+// }

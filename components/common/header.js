@@ -23,10 +23,10 @@ export default function Header() {
   return (
     <header className="flex items-center justify-between px-6 py-4 pb-10">
       <Link href={"/"}>
-        <Image src="/logo.png" width={70} height={70} alt="Logo" priority />
+        <Image src="/logo2.png" width={70} height={70} alt="Logo" priority />
       </Link>
 
-      <nav>
+      <nav className="flex gap-4 items-center">
         <ul className="flex gap-8 text-lg font-semibold">
           <li>
             <NavLink href="/blog">Blog</NavLink>
@@ -42,14 +42,13 @@ export default function Header() {
             </NavLink>
           </li>
         </ul>
+        <button
+          onClick={onHandleDarkMode}
+          className="w-10 text-base font-semibold px-1 py-1 rounded hover:bg-gray-100 dark:bg-white dark:text-black"
+        >
+          {isDark ? "☀️" : "🌙"}
+        </button>
       </nav>
-
-      <button
-        onClick={onHandleDarkMode}
-        className="w-15 text-base font-semibold px-1 py-1 rounded hover:bg-gray-100 dark:bg-white dark:text-black"
-      >
-        {isDark ? "☀️ Light" : "🌙 Dark"}
-      </button>
     </header>
   );
 }

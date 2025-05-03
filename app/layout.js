@@ -4,9 +4,9 @@ import "./globals.css";
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="px-15">
+      <body className="px-40">
         <Header />
-        <main>{children}</main>
+        <main className="">{children}</main>
       </body>
     </html>
   );
