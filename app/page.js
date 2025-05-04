@@ -1,6 +1,3 @@
-import Image from "next/image";
-import BlogHomePage from "./blog/page";
-
 export default function Home() {
   return (
     <>

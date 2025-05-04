@@ -1,8 +1,7 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import NavLink from "./nav-link";
+import NavLink from "./NavLink";
 
 export default function Header() {
   const [isDark, setIsDark] = useState(false);
@@ -23,7 +22,8 @@ export default function Header() {
   return (
     <header className="flex items-center justify-between px-6 py-4 pb-10">
       <Link href={"/"}>
-        <Image src="/logo2.png" width={70} height={70} alt="Logo" priority />
+        {/* <Image src="/logo2.png" width={70} height={70} alt="Logo" priority /> */}
+        <p className="text-2xl font-bold">종철로그</p>
       </Link>
 
       <nav className="flex gap-4 items-center">

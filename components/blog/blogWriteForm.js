@@ -1,10 +1,11 @@
 "use client";
-import createPost from "../../actions/blog";
-import ImagePicker from "../common/image";
-import { useActionState, useEffect, useRef, useState } from "react";
+import ImagePicker from "../common/Image";
+import { useActionState, useRef, useState } from "react";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import dynamic from "next/dynamic";
-import CategorySelect from "./category";
+import { useFormStatus } from "react-dom";
+import createPost from "../../app/actions/blog";
+import BlogWriteCategory from "./BlogWriteCategory";
 
 const ToastEditor = dynamic(
   () => import("@toast-ui/react-editor").then((mod) => mod.Editor),
@@ -17,6 +18,7 @@ export default function BlogWriteForm() {
   const editorRef = useRef();
   const [markdown, setMarkdown] = useState("");
   const [tags, setTags] = useState([]);
+  const { pending } = useFormStatus();
 
   const handleTagsKeyDown = (e) => {
     const keys = ["Enter", "Tab"];
@@ -42,7 +44,7 @@ export default function BlogWriteForm() {
         <div className="block text-gray-700 mb-3">
           {/* 클라이언트에서 직접 서버전용 함수를 쓸수 없기에.. 컴포넌트 새로팠음 */}
           {/* 사실 아래 컴포넌트도 훅을 사용하니 결국 클라이언트 컴포넌트지만 역할분리겸... */}
-          <CategorySelect />
+          <BlogWriteCategory />
         </div>
 
         {/* 제목 */}
@@ -152,7 +154,7 @@ export default function BlogWriteForm() {
             type="submit"
             className="float-right w-20 h-10 bg-green-500 p-1 text-white font-semibold py-2 rounded hover:bg-green-700"
           >
-            작성완료
+            {pending ? "Submitting..." : "작성완료"}
           </button>
         </div>
       </form>

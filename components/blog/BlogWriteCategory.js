@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function CategorySelect() {
+export default function BlogWriteCategory() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -8,7 +8,9 @@ export default function CategorySelect() {
       try {
         const res = await fetch("/api/category");
         const data = await res.json();
-        setCategories(data);
+        setCategories(
+          data.filter((category) => category.CATEGORY_TYPE === "소분류")
+        );
       } catch (err) {
         console.error("카테고리 로딩 실패:", err);
       }
@@ -16,7 +18,6 @@ export default function CategorySelect() {
 
     fetchCategories();
   }, []);
-
   return (
     <select
       name="category"
@@ -25,7 +26,7 @@ export default function CategorySelect() {
       <option value="">카테고리를 선택하세요</option>
       {categories.map((category) => (
         <option key={category.CATEGORY_ID} value={category.CATEGORY_ID}>
-          {category.NAME}
+          {category.CATEGORY_NAME}
         </option>
       ))}
     </select>

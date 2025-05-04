@@ -1,9 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { uploadImage } from "../cloudinary";
-import { insertBlog, insertTags, selectCategory } from "../lib/blog-db";
 import { redirect } from "next/navigation";
+import { uploadImage } from "../../cloudinary";
+import { insertBlog, insertTags } from "../../lib/blog-db";
 
 export default async function createPost(prevState, formData) {
   const title = formData.get("title");
