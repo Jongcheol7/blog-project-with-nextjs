@@ -2,8 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { uploadImage } from "../../cloudinary";
+import { deleteUnusedImages, uploadImage } from "../../cloudinary";
 import { insertBlog, insertTags } from "../../lib/blog-db";
+import { NextResponse } from "next/server";
 
 export default async function createPost(prevState, formData) {
   const title = formData.get("title");
@@ -11,6 +12,8 @@ export default async function createPost(prevState, formData) {
   const image = formData.get("image");
   const tags = formData.get("tags");
   const categoryId = formData.get("category");
+  const uploadedIdsRaw = formData.get("uploadedIds");
+  const uploadedIds = uploadedIdsRaw ? uploadedIdsRaw.split(",") : [];
 
   let errors = [];
   if (!title || title.trim().length === 0) {
@@ -68,6 +71,13 @@ export default async function createPost(prevState, formData) {
 
   if (tagNames.length > 0) {
     await insertTags(tagNames, postNo);
+  }
+
+  try {
+    await deleteUnusedImages(content, uploadedIds);
+  } catch (err) {
+    console.log("미사용 이미지 삭제중 오류 : ", err);
+    return NextResponse.json({ error: "블로그 조회 오류" }, { status: 500 });
   }
 
   revalidatePath("/blog");

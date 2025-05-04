@@ -5,12 +5,10 @@ export default function BlogListCategory({
   handleFilterPosts,
 }) {
   const blogListFilter = (categoryId) => {
-    console.log(categoryId);
     const newFiltered =
       categoryId === ""
         ? posts
         : posts.filter((post) => post.CATEGORY_ID === categoryId);
-    console.log(newFiltered);
     handleFilterPosts(newFiltered);
   };
 

@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { useFormStatus } from "react-dom";
 import createPost from "../../app/actions/blog";
 import BlogWriteCategory from "./BlogWriteCategory";
+import imageCompression from "browser-image-compression";
 
 // 마크다운 에디터
 const ToastEditor = dynamic(
@@ -32,6 +33,7 @@ export default function BlogWriteForm() {
   const editorRef = useRef();
   const [markdown, setMarkdown] = useState("");
   const [tags, setTags] = useState([]);
+  const [uploadedIds, setUploadedIds] = useState([]);
 
   // 태그 추가 이벤트
   const handleTagsKeyDown = (e) => {
@@ -147,6 +149,37 @@ export default function BlogWriteForm() {
               setMarkdown(content);
             }}
             className="border border-gray-300 rounded"
+            hooks={{
+              addImageBlobHook: async (blob, callback) => {
+                // 1. 압축 옵션 설정
+                const options = {
+                  maxSizeMB: 1, // 1MB 이하로 압축
+                  maxWidthOrHeight: 1024, // 크기 제한
+                  useWebWorker: true, // 성능 개선
+                };
+                //이미지 압축
+                const compressedBlob = await imageCompression(blob, options);
+                const formData = new FormData();
+                formData.append("file", compressedBlob);
+                formData.append("upload_preset", "blog_upload");
+                const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+                const res = await fetch(
+                  `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+                  {
+                    method: "POST",
+                    body: formData,
+                  }
+                );
+                const data = await res.json();
+                setUploadedIds((prev) => [...prev, data.public_id]);
+                callback(data.secure_url, "업로드된 이미지");
+              },
+            }}
+          />
+          <input
+            type="hidden"
+            name="uploadedIds"
+            value={uploadedIds.join(",")}
           />
         </div>
 

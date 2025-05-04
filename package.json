@@ -13,11 +13,13 @@
     "@toast-ui/editor": "^3.2.2",
     "@toast-ui/react-editor": "^3.2.3",
     "better-sqlite3": "^11.9.1",
+    "browser-image-compression": "^2.0.2",
     "cloudinary": "^2.6.0",
     "lucia": "^3.2.2",
     "next": "15.3.1",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-markdown": "^10.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -2,12 +2,14 @@
 import Link from "next/link";
 import BlogLists from "../../components/blog/BlogLists";
 import BlogListCategory from "../../components/blog/BlogListsCategory";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function BlogHomePage() {
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const searchTypeRef = useRef();
+  const searchInputRef = useRef();
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -33,14 +35,34 @@ export default function BlogHomePage() {
     fetchPosts();
   }, []);
 
+  // 카테고리 클릭에 의한 필터터
   const handleFilterPosts = (filterPosts) => {
     setFilteredPosts(filterPosts);
+    searchInputRef.current.value = "";
+  };
+
+  // 검색에 의한 필터
+  const handleSearchFilter = () => {
+    if (searchTypeRef.current.value === "title") {
+      setFilteredPosts(
+        posts.filter((post) =>
+          post.TITLE.includes(searchInputRef.current.value)
+        )
+      );
+    }
+    if (searchTypeRef.current.value === "content") {
+      setFilteredPosts(
+        posts.filter((post) =>
+          post.CONTENT.includes(searchInputRef.current.value)
+        )
+      );
+    }
   };
 
   return (
-    <div className="flex">
+    <div className="flex w-full">
       {/* 좌측 카테고리 사이드바 */}
-      <aside className="w-52 p-4 bg-gray-50 rounded shadow-sm">
+      <aside className="w-40 flex-shrink-0 pl-3 mt-2 bg-gray-50 rounded shadow-sm">
         <h3 className="text-sm font-semibold mb-3">카테고리</h3>
         <BlogListCategory
           categories={categories}
@@ -50,7 +72,7 @@ export default function BlogHomePage() {
       </aside>
 
       {/* 블로그 목록 */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <main className="flex-1 min-w-0 px-4 py-8">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800">📚 블로그 목록</h1>
           <Link
@@ -61,22 +83,29 @@ export default function BlogHomePage() {
           </Link>
         </div>
         <div className="flex items-center gap-2 mb-6">
-          <select className="border border-gray-300 rounded px-2 py-1 text-sm">
-            <option>제목</option>
-            <option>내용</option>
+          <select
+            ref={searchTypeRef}
+            className="border border-gray-300 rounded px-2 py-1 text-sm"
+          >
+            <option value={"title"}>제목</option>
+            <option value={"content"}>내용</option>
           </select>
           <input
             type="text"
             name="search"
+            ref={searchInputRef}
             placeholder="검색어를 입력하세요"
             className="border border-gray-300 rounded px-3 py-1 text-sm w-60 focus:outline-none focus:ring-2 focus:ring-green-400"
           />
-          <button className="bg-green-700 text-white text-sm px-4 py-1 rounded hover:bg-green-600">
+          <button
+            onClick={handleSearchFilter}
+            className="bg-green-700 text-white text-sm px-4 py-1 rounded hover:bg-green-600"
+          >
             검색
           </button>
         </div>
         <BlogLists posts={filteredPosts} />
-      </div>
+      </main>
     </div>
   );
 }

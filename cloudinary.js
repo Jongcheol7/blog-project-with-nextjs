@@ -26,6 +26,56 @@ export async function uploadImage(image) {
   const fileUri = "data:" + mime + ";" + encoding + "," + base64Data;
   const result = await cloudinary.uploader.upload(fileUri, {
     folder: "blogProjectWithNext",
+    quality: "auto", // 자동 압축
+    fetch_format: "auto", // WebP 등으로 자동 변환
   });
   return result.secure_url;
+}
+
+export function extractPublicIdsFromMarkdown(content) {
+  const regex =
+    /https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/(?:v\d+\/)?([^)"\s]+)/g;
+  const publicIds = [];
+  let match;
+  while ((match = regex.exec(content)) !== null) {
+    const fullPath = match[1];
+    const publicId = fullPath.replace(/\.(jpg|png|jpeg|gif|webp)$/, "");
+    publicIds.push(publicId);
+  }
+  return publicIds;
+}
+
+export async function deletePostAssets(post) {
+  const publicIdsFromContent = extractPublicIdsFromMarkdown(post.CONTENT);
+  const thumbnailPublicId = post.IMAGE_URL
+    ? post.IMAGE_URL.match(
+        /\/upload\/(?:v\d+\/)?(.+?)\.(jpg|jpeg|png|gif|webp)/
+      )?.[1]
+    : null;
+
+  const allPublicIds = [...publicIdsFromContent];
+  if (thumbnailPublicId) allPublicIds.push(thumbnailPublicId);
+
+  for (const id of allPublicIds) {
+    try {
+      await cloudinary.uploader.destroy(id);
+      console.log(`🗑️ Cloudinary 이미지 삭제 완료: ${id}`);
+    } catch (err) {
+      console.error(`❌ 이미지 삭제 실패: ${id}`, err);
+    }
+  }
+}
+
+export async function deleteUnusedImages(content, uploadedIds) {
+  const used = extractPublicIdsFromMarkdown(content);
+  const unused = uploadedIds.filter((id) => !used.includes(id));
+
+  for (const id of unused) {
+    try {
+      await cloudinary.uploader.destroy(id);
+      console.log("🗑️ 미사용 이미지 삭제 완료:", id);
+    } catch (err) {
+      console.error("❌ 삭제 실패:", id, err);
+    }
+  }
 }

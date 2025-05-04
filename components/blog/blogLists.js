@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function BlogLists({ posts }) {
   return (
@@ -17,13 +19,22 @@ export default function BlogLists({ posts }) {
 }
 
 function Post({ post }) {
+  // Link 처럼 페이지 이동하는 hook
+  const router = useRouter();
   return (
-    <div className="flex gap-4">
+    <div
+      className="flex gap-4"
+      onClick={() => {
+        router.push(`/blog/${post.POST_NO}`);
+      }}
+    >
       <div className="w-[200px] h-[140px] relative flex-shrink-0">
         <Image
-          src={post.IMAGE_URL || "/placeholder-img.png"}
+          src={`${post.IMAGE_URL}?f_auto,q_auto` || "/placeholder-img.png"}
           alt={post.TITLE || "No Image"}
           fill
+          sizes="200px"
+          priority
           className="object-cover rounded-md"
         />
       </div>
@@ -33,7 +44,9 @@ function Post({ post }) {
           <h2 className="text-base font-semibold text-gray-800 mb-1 mt-3">
             {post.TITLE}
           </h2>
-          <p className="text-sm text-gray-600 line-clamp-2">{post.CONTENT}</p>
+          <p className="text-sm text-gray-600 line-clamp-2 break-words overflow-hidden">
+            {post.CONTENT}
+          </p>
           <div className="flex flex-wrap gap-2 mt-2">
             {post.TAGS?.split(",").map((tag) => (
               <span
