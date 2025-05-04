@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 export default function BlogHomePage() {
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
-  const [filterPosts, setFilterPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -23,7 +23,7 @@ export default function BlogHomePage() {
         const res = await fetch("/api/blog");
         const data = await res.json();
         setPosts(data);
-        setFilterPosts(data);
+        setFilteredPosts(data);
       } catch (err) {
         console.error("블로그목록 로딩 실패:", err);
       }
@@ -34,7 +34,7 @@ export default function BlogHomePage() {
   }, []);
 
   const handleFilterPosts = (filterPosts) => {
-    setFilterPosts(filterPosts);
+    setFilteredPosts(filterPosts);
   };
 
   return (
@@ -54,7 +54,7 @@ export default function BlogHomePage() {
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800">📚 블로그 목록</h1>
           <Link
-            href="./blog-write"
+            href="/blog-write"
             className="border border-red-400 rounded px-3 py-1 bg-yellow-200 text-red-600 text-sm font-medium hover:bg-yellow-300"
           >
             ✍ 새글 작성
@@ -75,7 +75,7 @@ export default function BlogHomePage() {
             검색
           </button>
         </div>
-        <BlogLists posts={filterPosts} />
+        <BlogLists posts={filteredPosts} />
       </div>
     </div>
   );

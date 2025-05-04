@@ -31,7 +31,6 @@ export default async function createPost(prevState, formData) {
 
   let imageUrl;
   try {
-    console.log("업로드할 이미지: ", image);
     imageUrl = await uploadImage(image);
   } catch (error) {
     throw new Error(
@@ -48,28 +47,31 @@ export default async function createPost(prevState, formData) {
   });
 
   const postNo = insertResult.lastInsertRowid;
+  /*
   const tagNames = tags
     ? tags
         .split(",")
         .map((tag) => tag.trim().toLowerCase())
         .filter((tag) => tag.length > 0)
     : [];
+  */
+  const tagNames = [
+    ...new Set(
+      tags
+        ? tags
+            .split(",")
+            .map((tag) => tag.trim().toLowerCase())
+            .filter((tag) => tag.length > 0)
+        : []
+    ),
+  ];
 
-  console.log("tagNames: ", tagNames);
-  if (tagNames && tagNames.length > 0) {
+  if (tagNames.length > 0) {
     await insertTags(tagNames, postNo);
   }
 
-  revalidatePath("/", "layout");
+  revalidatePath("/blog");
   redirect("/blog");
 
-  return {
-    success: true,
-    errors: [],
-  };
+  return { success: true };
 }
-
-// export async function BlogCategory() {
-//   const categories = await selectCategory();
-//   return categories;
-// }

@@ -7,19 +7,33 @@ import { useFormStatus } from "react-dom";
 import createPost from "../../app/actions/blog";
 import BlogWriteCategory from "./BlogWriteCategory";
 
+// 마크다운 에디터
 const ToastEditor = dynamic(
   () => import("@toast-ui/react-editor").then((mod) => mod.Editor),
   { ssr: false }
 );
 
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      className="float-right w-20 h-10 bg-green-500 p-1 text-white font-semibold py-2 rounded hover:bg-green-700"
+    >
+      {pending ? "작성중..." : "작성완료"}
+    </button>
+  );
+}
+
 export default function BlogWriteForm() {
+  //서버 액션 연동
   //createPost는 서버함수이지만 사용가능한건 서버action 이라 가능하다..
   const [state, formAction] = useActionState(createPost, {});
   const editorRef = useRef();
   const [markdown, setMarkdown] = useState("");
   const [tags, setTags] = useState([]);
-  const { pending } = useFormStatus();
 
+  // 태그 추가 이벤트
   const handleTagsKeyDown = (e) => {
     const keys = ["Enter", "Tab"];
     if (keys.includes(e.key)) {
@@ -32,6 +46,7 @@ export default function BlogWriteForm() {
     }
   };
 
+  // 태그 삭제 이벤트
   const handleTagDelete = (deleteTag) => {
     setTags((prev) => prev.filter((tag) => tag !== deleteTag));
   };
@@ -107,7 +122,7 @@ export default function BlogWriteForm() {
             type="hidden"
             name="tags"
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-            value={tags}
+            value={tags.join(",")}
           />
         </div>
 
@@ -131,11 +146,13 @@ export default function BlogWriteForm() {
               const content = editorRef.current.getInstance().getMarkdown();
               setMarkdown(content);
             }}
+            className="border border-gray-300 rounded"
           />
         </div>
 
         {/* 에러 + 버튼 */}
         <div className="flex gap-2">
+          {/* 에러 내용 */}
           <div className="flex-1">
             {state.errors && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded text-sm">
@@ -150,12 +167,8 @@ export default function BlogWriteForm() {
               </div>
             )}
           </div>
-          <button
-            type="submit"
-            className="float-right w-20 h-10 bg-green-500 p-1 text-white font-semibold py-2 rounded hover:bg-green-700"
-          >
-            {pending ? "Submitting..." : "작성완료"}
-          </button>
+          {/* 작성완료 버튼 */}
+          <SubmitButton />
         </div>
       </form>
     </div>

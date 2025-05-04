@@ -3,11 +3,15 @@ import Image from "next/image";
 export default function BlogLists({ posts }) {
   return (
     <ul>
-      {posts.map((post) => (
-        <li key={post.POST_NO} className="mb-3">
-          <Post post={post} />
-        </li>
-      ))}
+      {posts.length === 0 ? (
+        <p className="text-gray-500 text-sm">게시글이 없습니다.</p>
+      ) : (
+        posts.map((post) => (
+          <li key={post.POST_NO} className="mb-3">
+            <Post post={post} />
+          </li>
+        ))
+      )}
     </ul>
   );
 }
@@ -17,8 +21,8 @@ function Post({ post }) {
     <div className="flex gap-4">
       <div className="w-[200px] h-[140px] relative flex-shrink-0">
         <Image
-          src={post.IMAGE_URL}
-          alt={post.TITLE}
+          src={post.IMAGE_URL || "/placeholder-img.png"}
+          alt={post.TITLE || "No Image"}
           fill
           className="object-cover rounded-md"
         />
