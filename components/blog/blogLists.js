@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import removeMd from "remove-markdown";
 
 export default function BlogLists({ posts }) {
   return (
@@ -21,6 +22,9 @@ export default function BlogLists({ posts }) {
 function Post({ post }) {
   // Link 처럼 페이지 이동하는 hook
   const router = useRouter();
+  // content에 마크다운을 제거 하는 기능..
+  // 글내용에 이미지가 있다면 이미지 소스를 그대로 문자열로 보여주는 현상
+  const contentPreview = removeMd(post.CONTENT).slice(0, 100);
   return (
     <div
       className="flex gap-4"
@@ -44,8 +48,8 @@ function Post({ post }) {
           <h2 className="text-base font-semibold text-gray-800 mb-1 mt-3">
             {post.TITLE}
           </h2>
-          <p className="text-sm text-gray-600 line-clamp-2 break-words overflow-hidden">
-            {post.CONTENT}
+          <p className="text-sm text-gray-600 line-clamp-2 break-all overflow-hidden">
+            {contentPreview}
           </p>
           <div className="flex flex-wrap gap-2 mt-2">
             {post.TAGS?.split(",").map((tag) => (

@@ -2,14 +2,15 @@
 import Image from "next/image";
 import { useState } from "react";
 
-export default function ImagePicker() {
-  const [pickedImage, setPickedImage] = useState();
+export default function ImagePicker({ imageUrl }) {
+  const [pickedImage, setPickedImage] = useState(imageUrl);
   function handleImageChange(e) {
     const file = e.target.files[0];
     if (!file) {
       setPickedImage(null);
       return;
     }
+
     const fileReader = new FileReader();
     fileReader.onload = () => {
       setPickedImage(fileReader.result);

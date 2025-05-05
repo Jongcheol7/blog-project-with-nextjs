@@ -23,7 +23,7 @@ export default function Header() {
     <header className="flex items-center justify-between px-6 py-4 pb-10">
       <Link href={"/"}>
         {/* <Image src="/logo2.png" width={70} height={70} alt="Logo" priority /> */}
-        <p className="text-2xl font-bold">종철로그</p>
+        <p className="text-2xl font-bold">종철.log</p>
       </Link>
 
       <nav className="flex gap-4 items-center">
@@ -39,6 +39,11 @@ export default function Header() {
           <li>
             <NavLink href="/about" className="hover:text-green-800">
               About
+            </NavLink>
+          </li>
+          <li>
+            <NavLink href="/manager" className="hover:text-green-800">
+              관리자
             </NavLink>
           </li>
         </ul>

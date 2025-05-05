@@ -7,12 +7,29 @@ import DeleteButton from "../../../components/blog/DeleteButton";
 export default async function BlogPostDetail({ params }) {
   const { postNo } = await params;
   const post = await selectBlog(postNo);
-  console.log(post);
+  //console.log(post);
 
   return (
     <div className="max-w-3xl mx-auto py-10 px-4">
-      <DeleteButton postNo={post.POST_NO} />
-
+      {/* 뒤로가기 */}
+      <div className="mt-10 flex gap-2 justify-end">
+        {/* 목록으로 돌아가기 버튼 */}
+        <Link
+          href="/blog"
+          className="bg-yellow-100 border border-red-400 text-red-600 text-sm px-2 py-1 rounded hover:bg-yellow-200 transition"
+        >
+          ← 목록으로
+        </Link>
+        {/* 수정 버튼 */}
+        <Link
+          href={`/blog/${post.POST_NO}/edit`}
+          className="bg-yellow-100 border border-red-400 text-red-600 text-sm px-2 py-1 rounded hover:bg-yellow-200 transition"
+        >
+          수정
+        </Link>
+        {/* 삭제 버튼 */}
+        <DeleteButton postNo={post.POST_NO} />
+      </div>
       {/* 제목 */}
       <h1 className="text-3xl font-bold mb-2">{post.TITLE}</h1>
 
@@ -21,7 +38,7 @@ export default async function BlogPostDetail({ params }) {
         {post.INPUT_DATETIME?.slice(0, 10)} · 조회수 {post.VIEWS}
       </div>
 
-      {/* 썸네일 */}
+      {/* 썸네일 
       {typeof post.IMAGE_URL === "string" && post.IMAGE_URL.trim() !== "" ? (
         <div className="relative w-full h-[400px] mb-6">
           <Image
@@ -34,6 +51,7 @@ export default async function BlogPostDetail({ params }) {
           />
         </div>
       ) : null}
+       */}
 
       {/* 태그 */}
       <div className="flex flex-wrap gap-2 mb-6">
@@ -48,7 +66,7 @@ export default async function BlogPostDetail({ params }) {
       </div>
 
       {/* 본문 내용 */}
-      {/* ✨ 마크다운 렌더링 */}
+      {/* 마크다운 렌더링 */}
       <ReactMarkdown
         components={{
           img({ node, ...props }) {
@@ -59,13 +77,6 @@ export default async function BlogPostDetail({ params }) {
       >
         {post.CONTENT}
       </ReactMarkdown>
-
-      {/* 뒤로가기 */}
-      <div className="mt-10">
-        <Link href="/blog" className="text-sm text-green-700 hover:underline">
-          ← 목록으로 돌아가기
-        </Link>
-      </div>
     </div>
   );
 }

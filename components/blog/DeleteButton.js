@@ -25,7 +25,7 @@ export default function DeleteButton({ postNo }) {
 
   return (
     <button
-      className="border border-red-400 rounded px-3 py-1 bg-yellow-200 text-red-600 text-sm font-medium hover:bg-yellow-300"
+      className="bg-yellow-100 border border-red-400 text-red-600 text-sm px-2 py-1 rounded hover:bg-yellow-200 transition"
       onClick={handleDelete}
     >
       삭제

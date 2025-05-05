@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 
-export default function BlogWriteCategory() {
+export default function BlogWriteCategory({ categoryId }) {
   const [categories, setCategories] = useState([]);
-
+  const [selected, setSelected] = useState(categoryId);
+  console.log(categoryId);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -21,6 +22,8 @@ export default function BlogWriteCategory() {
   return (
     <select
       name="category"
+      value={selected}
+      onChange={(e) => setSelected(e.target.value)}
       className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
     >
       <option value="">카테고리를 선택하세요</option>

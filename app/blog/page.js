@@ -73,36 +73,38 @@ export default function BlogHomePage() {
 
       {/* 블로그 목록 */}
       <main className="flex-1 min-w-0 px-4 py-8">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">📚 블로그 목록</h1>
+        <div>
+          {/* <h1 className="text-2xl font-bold text-gray-800">블로그 목록</h1> */}
+        </div>
+        <div className="flex items-center gap-2 mb-6 justify-between">
+          <div className="flex gap-1">
+            <select
+              ref={searchTypeRef}
+              className="border border-gray-300 rounded px-2 py-1 text-sm"
+            >
+              <option value={"title"}>제목</option>
+              <option value={"content"}>내용</option>
+            </select>
+            <input
+              type="text"
+              name="search"
+              ref={searchInputRef}
+              placeholder="검색어를 입력하세요"
+              className="border border-gray-300 rounded px-3 py-1 text-sm w-60 focus:outline-none focus:ring-2 focus:ring-green-400"
+            />
+            <button
+              onClick={handleSearchFilter}
+              className="bg-green-700 text-white text-sm px-4 py-1 rounded hover:bg-green-600"
+            >
+              검색
+            </button>
+          </div>
           <Link
             href="/blog-write"
-            className="border border-red-400 rounded px-3 py-1 bg-yellow-200 text-red-600 text-sm font-medium hover:bg-yellow-300"
+            className="bg-yellow-100 border border-red-400 text-red-600 text-sm px-1 py-1 rounded hover:bg-yellow-200 transition"
           >
             ✍ 새글 작성
           </Link>
-        </div>
-        <div className="flex items-center gap-2 mb-6">
-          <select
-            ref={searchTypeRef}
-            className="border border-gray-300 rounded px-2 py-1 text-sm"
-          >
-            <option value={"title"}>제목</option>
-            <option value={"content"}>내용</option>
-          </select>
-          <input
-            type="text"
-            name="search"
-            ref={searchInputRef}
-            placeholder="검색어를 입력하세요"
-            className="border border-gray-300 rounded px-3 py-1 text-sm w-60 focus:outline-none focus:ring-2 focus:ring-green-400"
-          />
-          <button
-            onClick={handleSearchFilter}
-            className="bg-green-700 text-white text-sm px-4 py-1 rounded hover:bg-green-600"
-          >
-            검색
-          </button>
         </div>
         <BlogLists posts={filteredPosts} />
       </main>

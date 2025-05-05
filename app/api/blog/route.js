@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import {
   deleteBlog,
   deleteBlogTags,
+  deleteTags,
   selectBlog,
   selectBlogs,
 } from "../../../lib/blog-db";
@@ -43,6 +44,7 @@ export async function DELETE(request) {
   }
 
   try {
+    await deleteTags(postNo);
     await deleteBlogTags(postNo);
     await deleteBlog(postNo);
   } catch (err) {
