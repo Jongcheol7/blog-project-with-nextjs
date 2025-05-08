@@ -11,6 +11,7 @@ import {
   updateBlog,
 } from "../../lib/blog-db";
 import { NextResponse } from "next/server";
+import { extractPublicIdsFromMarkdown } from "../../util/extractPublicIds";
 
 export default async function createPost(prevState, formData) {
   const title = formData.get("title");
@@ -30,6 +31,9 @@ export default async function createPost(prevState, formData) {
   }
   if (!image || image.size === 0) {
     errors.push("Image is required.");
+  }
+  if (!categoryId) {
+    errors.push("Category is required.");
   }
   if (errors.length > 0) {
     return {
@@ -56,14 +60,7 @@ export default async function createPost(prevState, formData) {
   });
 
   const postNo = insertResult.lastInsertRowid;
-  /*
-  const tagNames = tags
-    ? tags
-        .split(",")
-        .map((tag) => tag.trim().toLowerCase())
-        .filter((tag) => tag.length > 0)
-    : [];
-  */
+
   const tagNames = [
     ...new Set(
       tags
@@ -101,6 +98,7 @@ export async function updatePost(prevState, formData) {
   const categoryId = formData.get("category");
   const uploadedIdsRaw = formData.get("uploadedIds");
   const uploadedIds = uploadedIdsRaw ? uploadedIdsRaw.split(",") : [];
+  const existingthumbnailUrl = formData.get("existingthumbnailUrl");
 
   let errors = [];
   if (!title || title.trim().length === 0) {
@@ -109,8 +107,11 @@ export async function updatePost(prevState, formData) {
   if (!content || content.trim().length === 0) {
     errors.push("Content is required.");
   }
-  if (!image || image.size === 0) {
+  if ((!image && image.size === 0) || !existingthumbnailUrl) {
     errors.push("Image is required.");
+  }
+  if (!categoryId) {
+    errors.push("Category is required.");
   }
   if (errors.length > 0) {
     return {
@@ -119,18 +120,34 @@ export async function updatePost(prevState, formData) {
     };
   }
 
-  console.log("📦 image:", image);
-  console.log("📦 image type:", typeof image);
+  console.log("image : ", image);
+  console.log("existingthumbnailUrl : ", existingthumbnailUrl);
 
   let imageUrl;
   try {
-    imageUrl = await uploadImage(image);
+    if (image && image.size > 0 && image.name !== "undefined") {
+      //기존것 삭제해야함
+      await deleteUnusedImages(
+        "",
+        extractPublicIdsFromMarkdown(existingthumbnailUrl)
+      );
+      imageUrl = await uploadImage(image);
+    } else {
+      console.log("새로추가안함 기존사진그대로사용");
+      imageUrl = existingthumbnailUrl;
+    }
   } catch (error) {
     throw new Error(
       "Image upload failed, post was not created. Please try again later."
     );
   }
-
+  console.log("수정데이터-------------");
+  console.log("postNo : ", postNo);
+  console.log("title : ", title);
+  console.log("content : ", content);
+  console.log("imageUrl : ", imageUrl);
+  console.log("categoryId : ", categoryId);
+  console.log("------------------------");
   await updateBlog({
     postNo,
     title,

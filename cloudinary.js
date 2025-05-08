@@ -1,4 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
+import { extractPublicIdsFromMarkdown } from "./util/extractPublicIds";
 
 if (!process.env.CLOUDINARY_CLOUD_NAME) {
   throw new Error("CLOUDINARY_CLOUD_NAME is not set");
@@ -30,19 +31,6 @@ export async function uploadImage(image) {
     fetch_format: "auto", // WebP 등으로 자동 변환
   });
   return result.secure_url;
-}
-
-export function extractPublicIdsFromMarkdown(content) {
-  const regex =
-    /https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/(?:v\d+\/)?([^)"\s]+)/g;
-  const publicIds = [];
-  let match;
-  while ((match = regex.exec(content)) !== null) {
-    const fullPath = match[1];
-    const publicId = fullPath.replace(/\.(jpg|png|jpeg|gif|webp)$/, "");
-    publicIds.push(publicId);
-  }
-  return publicIds;
 }
 
 export async function deletePostAssets(post) {

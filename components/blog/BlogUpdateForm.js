@@ -7,6 +7,7 @@ import { useFormStatus } from "react-dom";
 import BlogWriteCategory from "./BlogWriteCategory";
 import imageCompression from "browser-image-compression";
 import { updatePost } from "../../app/actions/blog";
+import { extractPublicIdsFromMarkdown } from "../../util/extractPublicIds";
 
 // 마크다운 에디터
 const ToastEditor = dynamic(
@@ -21,7 +22,7 @@ function SubmitButton() {
       type="submit"
       className="float-right w-20 h-10 bg-green-500 p-1 text-white font-semibold py-2 rounded hover:bg-green-700"
     >
-      {pending ? "작성중..." : "작성완료"}
+      {pending ? "수정중..." : "수정완료"}
     </button>
   );
 }
@@ -33,7 +34,13 @@ export default function BlogUpdateForm({ post }) {
   const editorRef = useRef();
   const [markdown, setMarkdown] = useState(post.CONTENT);
   const [tags, setTags] = useState(post.TAGS.split(","));
-  const [uploadedIds, setUploadedIds] = useState([]);
+  const [uploadedIds, setUploadedIds] = useState(() => {
+    return extractPublicIdsFromMarkdown(post.CONTENT);
+  });
+
+  console.log("글수정 화면 진입 -----");
+  console.log(post);
+  console.log("초기 데이터 출력완료-------");
 
   // 태그 추가 이벤트
   const handleTagsKeyDown = (e) => {

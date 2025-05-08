@@ -44,6 +44,9 @@ export default function ImagePicker({ imageUrl }) {
         onChange={handleImageChange}
         className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-green-100 file:text-green-700 hover:file:bg-green-200"
       />
+      {imageUrl && (
+        <input type="hidden" name="existingthumbnailUrl" value={imageUrl} />
+      )}
     </div>
   );
 }
