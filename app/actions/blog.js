@@ -2,16 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { deleteUnusedImages, uploadImage } from "../../cloudinary";
+import { deleteUnusedImages, uploadImage } from "@lib/cloudinary";
 import {
   deleteBlogTags,
   deleteTags,
   insertBlog,
   insertTags,
   updateBlog,
-} from "../../lib/blog-db";
+} from "@lib/blog-db";
 import { NextResponse } from "next/server";
-import { extractPublicIdsFromMarkdown } from "../../util/extractPublicIds";
+import { extractPublicIdsFromMarkdown } from "@util/extractPublicIds";
 
 export default async function createPost(prevState, formData) {
   const title = formData.get("title");

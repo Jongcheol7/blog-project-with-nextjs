@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import execQuery from "../../../lib/manager-db";
+import execQuery from "@lib/manager-db";
 
 export async function POST(request) {
   const { query } = await request.json();

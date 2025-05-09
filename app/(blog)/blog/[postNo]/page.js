@@ -1,8 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
-import { selectBlog } from "../../../lib/blog-db";
+import { selectBlog } from "@lib/blog-db";
 import ReactMarkdown from "react-markdown";
-import DeleteButton from "../../../components/blog/DeleteButton";
+import DeleteButton from "@components/blog/DeleteButton";
 
 export default async function BlogPostDetail({ params }) {
   const { postNo } = await params;

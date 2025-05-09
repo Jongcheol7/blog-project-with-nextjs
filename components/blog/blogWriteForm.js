@@ -1,11 +1,11 @@
 "use client";
-import ImagePicker from "../common/Image";
+import ImagePicker from "@common/Image";
 import { useActionState, useRef, useState } from "react";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import dynamic from "next/dynamic";
 import { useFormStatus } from "react-dom";
-import createPost from "../../app/actions/blog";
-import BlogWriteCategory from "./BlogWriteCategory";
+import createPost from "@app/actions/blog";
+import BlogWriteCategory from "@components/blog/BlogWriteCategory";
 import imageCompression from "browser-image-compression";
 
 // 마크다운 에디터

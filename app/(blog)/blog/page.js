@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import BlogLists from "../../components/blog/BlogLists";
-import BlogListCategory from "../../components/blog/BlogListsCategory";
+import BlogLists from "@components/blog/BlogLists";
+import BlogListCategory from "@components/blog/BlogListsCategory";
 import { useEffect, useRef, useState } from "react";
 
 export default function BlogHomePage() {

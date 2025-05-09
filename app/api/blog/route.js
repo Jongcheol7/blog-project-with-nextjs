@@ -5,8 +5,8 @@ import {
   deleteTags,
   selectBlog,
   selectBlogs,
-} from "../../../lib/blog-db";
-import { deletePostAssets } from "../../../cloudinary";
+} from "@lib/blog-db";
+import { deletePostAssets } from "@lib/cloudinary";
 
 export async function GET() {
   try {

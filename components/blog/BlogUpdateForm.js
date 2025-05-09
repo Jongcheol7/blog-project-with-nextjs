@@ -1,13 +1,13 @@
 "use client";
-import ImagePicker from "../common/Image";
+import ImagePicker from "@common/Image";
 import { useActionState, useRef, useState } from "react";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import dynamic from "next/dynamic";
 import { useFormStatus } from "react-dom";
-import BlogWriteCategory from "./BlogWriteCategory";
+import BlogWriteCategory from "@components/blog/BlogWriteCategory";
 import imageCompression from "browser-image-compression";
-import { updatePost } from "../../app/actions/blog";
-import { extractPublicIdsFromMarkdown } from "../../util/extractPublicIds";
+import { updatePost } from "@app/actions/blog";
+import { extractPublicIdsFromMarkdown } from "@util/extractPublicIds";
 
 // 마크다운 에디터
 const ToastEditor = dynamic(

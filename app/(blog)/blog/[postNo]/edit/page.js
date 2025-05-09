@@ -1,5 +1,5 @@
-import BlogUpdateForm from "../../../../components/blog/BlogUpdateForm";
-import { selectBlog } from "../../../../lib/blog-db";
+import BlogUpdateForm from "@components/blog/BlogUpdateForm";
+import { selectBlog } from "@lib/blog-db";
 
 export default async function BlogEditPage({ params }) {
   const { postNo } = await params;

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import NavLink from "./NavLink";
+import NavLink from "@common/NavLink";
 
 export default function Header() {
   const [isDark, setIsDark] = useState(false);
@@ -44,6 +44,11 @@ export default function Header() {
           <li>
             <NavLink href="/manager" className="hover:text-green-800">
               관리자
+            </NavLink>
+          </li>
+          <li>
+            <NavLink href="/login" className="hover:text-green-800">
+              Login
             </NavLink>
           </li>
         </ul>
