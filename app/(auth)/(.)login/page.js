@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 export default function LoginPage() {
   const router = useRouter();
   return (
+    //fixed inset-0 으로 화면전체를 모달로 인식하도록함.
     <div
       className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center"
       onClick={() => router.back()}

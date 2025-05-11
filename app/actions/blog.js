@@ -15,6 +15,7 @@ import { extractPublicIdsFromMarkdown } from "@util/extractPublicIds";
 
 export default async function createPost(prevState, formData) {
   const title = formData.get("title");
+  const userId = formData.get("userId");
   const content = formData.get("content");
   const image = formData.get("image");
   const tags = formData.get("tags");
@@ -55,7 +56,7 @@ export default async function createPost(prevState, formData) {
     title,
     content,
     imageUrl: imageUrl,
-    userId: "jclee",
+    userId: userId,
     categoryId,
   });
 

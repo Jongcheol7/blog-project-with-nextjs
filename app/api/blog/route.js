@@ -8,6 +8,7 @@ import {
 } from "@lib/blog-db";
 import { deletePostAssets } from "@lib/cloudinary";
 
+// 블로그 조회 함수
 export async function GET() {
   try {
     const posts = await selectBlogs();
@@ -18,6 +19,7 @@ export async function GET() {
   }
 }
 
+// 블로그 글 삭제 함수수
 export async function DELETE(request) {
   const { searchParams } = new URL(request.url);
   const postNo = searchParams.get("postNo");

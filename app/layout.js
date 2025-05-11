@@ -1,11 +1,14 @@
 import Header from "@common/Header";
 import "./globals.css";
+import UserSession from "@lib/UserSession";
 
-export default function RootLayout({ children, login }) {
+export default async function RootLayout({ children, login }) {
+  const initialUser = await UserSession();
+  console.log("루트레이아웃 user : ", initialUser);
   return (
     <html lang="en">
       <body className="px-40">
-        <Header />
+        <Header initialUser={initialUser} />
         <main className="">
           {children}
           {/* 인터셉터라우팅을 사용하려면 최상위 레이아웃에 

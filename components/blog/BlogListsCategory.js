@@ -8,7 +8,7 @@ export default function BlogListCategory({
     const newFiltered =
       categoryId === ""
         ? posts
-        : posts.filter((post) => post.CATEGORY_ID === categoryId);
+        : posts.filter((post) => post.catetory_id === categoryId);
     handleFilterPosts(newFiltered);
   };
 
@@ -18,14 +18,14 @@ export default function BlogListCategory({
         <button onClick={() => blogListFilter("")}>전체보기</button>
       </li>
       {categories.map((category) => (
-        <li className="ml-0" key={category.CATEGORY_ID}>
+        <li className="ml-0" key={category.category_id}>
           <button
             className={`text-sm hover:underline ${
-              category.CATEGORY_TYPE === "소분류" ? "ml-4" : "font-semibold"
+              category.category_type === "소분류" ? "ml-4" : "font-semibold"
             }`}
-            onClick={() => blogListFilter(category.CATEGORY_ID)}
+            onClick={() => blogListFilter(category.category_id)}
           >
-            {category.CATEGORY_NAME}
+            {category.category_name}
           </button>
         </li>
       ))}

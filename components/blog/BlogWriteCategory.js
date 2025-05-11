@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 export default function BlogWriteCategory({ categoryId }) {
   const [categories, setCategories] = useState([]);
   const [selected, setSelected] = useState(categoryId);
-  console.log(categoryId);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const res = await fetch("/api/category");
         const data = await res.json();
         setCategories(
-          data.filter((category) => category.CATEGORY_TYPE === "소분류")
+          data.filter((category) => category.category_type === "소분류")
         );
       } catch (err) {
         console.error("카테고리 로딩 실패:", err);
@@ -28,8 +28,8 @@ export default function BlogWriteCategory({ categoryId }) {
     >
       <option value="">카테고리를 선택하세요</option>
       {categories.map((category) => (
-        <option key={category.CATEGORY_ID} value={category.CATEGORY_ID}>
-          {category.CATEGORY_NAME}
+        <option key={category.category_id} value={category.category_id}>
+          {category.category_name}
         </option>
       ))}
     </select>

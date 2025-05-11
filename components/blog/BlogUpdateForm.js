@@ -32,10 +32,10 @@ export default function BlogUpdateForm({ post }) {
   //createPost는 서버함수이지만 사용가능한건 서버action 이라 가능하다..
   const [state, formAction] = useActionState(updatePost, {});
   const editorRef = useRef();
-  const [markdown, setMarkdown] = useState(post.CONTENT);
+  const [markdown, setMarkdown] = useState(post.content);
   const [tags, setTags] = useState(post.TAGS.split(","));
   const [uploadedIds, setUploadedIds] = useState(() => {
-    return extractPublicIdsFromMarkdown(post.CONTENT);
+    return extractPublicIdsFromMarkdown(post.content);
   });
 
   console.log("글수정 화면 진입 -----");
@@ -65,12 +65,12 @@ export default function BlogUpdateForm({ post }) {
       <h1 className="text-2xl font-bold mb-6">글수정</h1>
       <form action={formAction} className="space-y-6">
         {/* 글번호 */}
-        <input type="hidden" value={post.POST_NO} name="postNo" />
+        <input type="hidden" value={post.post_no} name="postNo" />
         {/* 카테고리 */}
         <div className="block text-gray-700 mb-3">
           {/* 클라이언트에서 직접 서버전용 함수를 쓸수 없기에.. 컴포넌트 새로팠음 */}
           {/* 사실 아래 컴포넌트도 훅을 사용하니 결국 클라이언트 컴포넌트지만 역할분리겸... */}
-          <BlogWriteCategory categoryId={post.CATEGORY_ID} />
+          <BlogWriteCategory categoryId={post.category_id} />
         </div>
 
         {/* 제목 */}
@@ -85,7 +85,7 @@ export default function BlogUpdateForm({ post }) {
             type="text"
             name="title"
             id="title"
-            defaultValue={post.TITLE}
+            defaultValue={post.title}
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
         </div>
@@ -98,7 +98,7 @@ export default function BlogUpdateForm({ post }) {
           >
             썸네일
           </label>
-          <ImagePicker imageUrl={post.IMAGE_URL} />
+          <ImagePicker imageUrl={post.image_url} />
         </div>
 
         {/* 태그 */}
@@ -149,7 +149,7 @@ export default function BlogUpdateForm({ post }) {
           <input type="hidden" name="content" value={markdown} />
           <ToastEditor
             ref={editorRef}
-            initialValue={post.CONTENT}
+            initialValue={post.content}
             previewStyle="vertical" // 'tab'도 가능
             height="400px"
             initialEditType="wysiwyg" // 또는 'markdown'

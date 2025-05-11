@@ -7,6 +7,7 @@ import { useFormStatus } from "react-dom";
 import createPost from "@app/actions/blog";
 import BlogWriteCategory from "@components/blog/BlogWriteCategory";
 import imageCompression from "browser-image-compression";
+import { useUserStore } from "@store/UserStore";
 
 // 마크다운 에디터
 const ToastEditor = dynamic(
@@ -34,6 +35,12 @@ export default function BlogWriteForm() {
   const [markdown, setMarkdown] = useState("");
   const [tags, setTags] = useState([]);
   const [uploadedIds, setUploadedIds] = useState([]);
+
+  const { user } = useUserStore();
+  console.log("글쓰기 폼 user : ", user);
+  // 세션값 가져와서 관리자 여부인지, 세션이 있는지 판단
+  const isAdmin = user?.isAdmin ? true : false;
+  const isUser = user === null ? false : true;
 
   // 태그 추가 이벤트
   const handleTagsKeyDown = (e) => {
@@ -78,6 +85,7 @@ export default function BlogWriteForm() {
             id="title"
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
+          <input type="hidden" name="userId" value={user.id} />
         </div>
 
         {/* 썸네일 */}

@@ -6,7 +6,8 @@
       "@lib/*": ["lib/*"],
       "@util/*": ["util/*"],
       "@common/*":["components/common/*"],
-      "@app/*":["app/*"]
+      "@app/*":["app/*"],
+      "@store/*":["store/*"]
     }
   }
 }

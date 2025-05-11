@@ -3,6 +3,7 @@ import Link from "next/link";
 import BlogLists from "@components/blog/BlogLists";
 import BlogListCategory from "@components/blog/BlogListsCategory";
 import { useEffect, useRef, useState } from "react";
+import { useUserStore } from "@store/UserStore";
 
 export default function BlogHomePage() {
   const [categories, setCategories] = useState([]);
@@ -10,6 +11,11 @@ export default function BlogHomePage() {
   const [filteredPosts, setFilteredPosts] = useState([]);
   const searchTypeRef = useRef();
   const searchInputRef = useRef();
+  const { user } = useUserStore();
+  // 세션값 가져와서 관리자 여부인지, 세션이 있는지 판단
+  const isAdmin = user?.isAdmin ? true : false;
+  const isUser = user === null ? false : true;
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -99,12 +105,14 @@ export default function BlogHomePage() {
               검색
             </button>
           </div>
-          <Link
-            href="/blog-write"
-            className="bg-yellow-100 border border-red-400 text-red-600 text-sm px-1 py-1 rounded hover:bg-yellow-200 transition"
-          >
-            ✍ 새글 작성
-          </Link>
+          {isAdmin && (
+            <Link
+              href="/blog-write"
+              className="bg-yellow-100 border border-red-400 text-red-600 text-sm px-1 py-1 rounded hover:bg-yellow-200 transition"
+            >
+              ✍ 새글 작성
+            </Link>
+          )}
         </div>
         <BlogLists posts={filteredPosts} />
       </main>

@@ -68,3 +68,11 @@ git push origin main # GitHub에 올리기
   -> 점검완료
 - components/common/Image.js 이미지 업로드 시 미리보기 UI
 - components/common/NavLink.js 헤더 메뉴 항목 (네비게이션 링크 구성)
+
+## 캐시 삭제 방법
+
+Remove-Item -Recurse -Force node_modules
+Remove-Item -Force package-lock.json
+npm cache clean --force
+npm install
+npm run dev

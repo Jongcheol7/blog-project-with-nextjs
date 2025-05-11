@@ -2,15 +2,19 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import NavLink from "@common/NavLink";
+import { useUserStore } from "@store/UserStore";
 
-export default function Header() {
+export default function Header({ initialUser }) {
+  const { user, setUser, logout } = useUserStore();
   const [isDark, setIsDark] = useState(false);
 
-  const onHandleDarkMode = () => {
-    setIsDark((prev) => !prev);
-  };
+  // zustand 전역값 세팅
+  useEffect(() => {
+    if (initialUser) setUser(initialUser);
+    else logout();
+  }, [initialUser]);
 
-  // 💡 핵심: html 태그에 .dark 클래스를 붙여야 Tailwind가 인식함
+  // 핵심: html 태그에 .dark 클래스를 붙여야 Tailwind가 인식함
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add("dark");
@@ -18,6 +22,14 @@ export default function Header() {
       document.documentElement.classList.remove("dark");
     }
   }, [isDark]);
+
+  // 세션값 가져와서 관리자 여부인지, 세션이 있는지 판단
+  const isAdmin = user?.isAdmin ? true : false;
+  const isUser = user === null ? false : true;
+
+  const onHandleDarkMode = () => {
+    setIsDark((prev) => !prev);
+  };
 
   return (
     <header className="flex items-center justify-between px-6 py-4 pb-10">
@@ -41,15 +53,32 @@ export default function Header() {
               About
             </NavLink>
           </li>
+          {isAdmin && (
+            <li>
+              <NavLink href="/manager" className="hover:text-green-800">
+                관리자
+              </NavLink>
+            </li>
+          )}
+
+          {/* 로그아웃시 서버에서는 잘 로그아웃이 되지만 클라이언트에서는 그걸 감지하지 못함
+          따라서 Link 가 아닌 button 으로 강제적으로 리다이렉션 시켜줌. */}
           <li>
-            <NavLink href="/manager" className="hover:text-green-800">
-              관리자
-            </NavLink>
-          </li>
-          <li>
-            <NavLink href="/login" className="hover:text-green-800">
-              Login
-            </NavLink>
+            {isUser ? (
+              <button
+                onClick={() => {
+                  logout();
+                  window.location.href = "/api/auth/logout";
+                }}
+                className="hover:text-green-800"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link href={"/login"} className="hover:text-green-800">
+                Login
+              </Link>
+            )}
           </li>
         </ul>
         <button
