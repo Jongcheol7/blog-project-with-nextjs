@@ -1,7 +1,5 @@
+import { redirect } from "next/navigation";
 export default async function Home() {
-  return (
-    <>
-      <h1>Home Page</h1>
-    </>
-  );
+  redirect("/blog");
+  return <></>;
 }

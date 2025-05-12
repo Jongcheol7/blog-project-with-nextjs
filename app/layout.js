@@ -4,7 +4,6 @@ import UserSession from "@lib/UserSession";
 
 export default async function RootLayout({ children, login }) {
   const initialUser = await UserSession();
-  console.log("루트레이아웃 user : ", initialUser);
   return (
     <html lang="en">
       <body className="px-40">

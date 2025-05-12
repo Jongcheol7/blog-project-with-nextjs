@@ -3,9 +3,10 @@ import { NextResponse } from "next/server";
 
 // 블로그 조회수 증가 함수
 export async function POST(request) {
-  const { searchParams } = new URL(request.url);
-  console.log("searchParams : ", searchParams);
-  const postNo = searchParams.get("postNo");
+  //const { searchParams } = new URL(request.url);
+  // console.log("searchParams : ", searchParams);
+  // const postNo = searchParams.get("postNo");
+  const { postNo } = await request.json();
   if (!postNo) {
     return NextResponse.json({ error: "글 번호가 없습니다" }, { status: 400 });
   }

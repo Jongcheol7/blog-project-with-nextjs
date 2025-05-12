@@ -9,9 +9,11 @@ import {
 import { deletePostAssets } from "@lib/cloudinary";
 
 // 블로그 조회 함수
-export async function GET() {
+export async function POST(request) {
+  const { userId } = await request.json();
   try {
-    const posts = await selectBlogs();
+    console.log("블로그 목록 조회 시작 !!", userId);
+    const posts = await selectBlogs(userId);
     return NextResponse.json(posts);
   } catch (err) {
     console.log("블로그 목록 조회 오류 : ", err);
@@ -19,7 +21,7 @@ export async function GET() {
   }
 }
 
-// 블로그 글 삭제 함수수
+// 블로그 글 삭제 함수
 export async function DELETE(request) {
   const { searchParams } = new URL(request.url);
   const postNo = searchParams.get("postNo");

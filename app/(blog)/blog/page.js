@@ -28,7 +28,13 @@ export default function BlogHomePage() {
     };
     const fetchPosts = async () => {
       try {
-        const res = await fetch("/api/blog");
+        const res = await fetch("/api/blog", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: user?.id }),
+        });
         const data = await res.json();
         setPosts(data);
         setFilteredPosts(data);
@@ -39,7 +45,7 @@ export default function BlogHomePage() {
 
     fetchCategories();
     fetchPosts();
-  }, []);
+  }, [user]);
 
   // 카테고리 클릭에 의한 필터터
   const handleFilterPosts = (filterPosts) => {

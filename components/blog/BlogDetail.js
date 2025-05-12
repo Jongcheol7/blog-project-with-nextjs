@@ -13,8 +13,13 @@ export default function BlogDetail({ post, user }) {
       console.log("alreadyViewed : ", alreadyViewed);
       if (!alreadyViewed) {
         // 조회수 증가 api 호출
-        await fetch(`/api/blog/view?postNo=${post.post_no}`, {
+        await fetch("/api/blog/view", {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ postNo: post.post_no }),
+          cache: "no-store", // 캐시 방지
         });
 
         // 쿠키 저장
