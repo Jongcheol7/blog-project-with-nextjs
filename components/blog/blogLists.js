@@ -80,13 +80,15 @@ function Post({ post }) {
 
       <div className="flex-1 flex flex-col">
         <div className="flex justify-between">
-          <div className="flex-1">
-            <h2 className="text-base font-semibold text-gray-800 mb-1 mt-3">
-              {post.title}
-            </h2>
-            <p className="text-sm text-gray-600 line-clamp-2 break-all overflow-hidden">
-              {contentPreview}
-            </p>
+          <div className="flex flex-col justify-between">
+            <div className="flex-1">
+              <h2 className="text-base font-semibold text-gray-800 mb-1 mt-3">
+                {post.title}
+              </h2>
+              <p className="text-sm text-gray-600 line-clamp-2 break-all overflow-hidden">
+                {contentPreview}
+              </p>
+            </div>
             <div className="flex flex-wrap gap-2 mt-2">
               {post.tags?.split(",").map((tag) => (
                 <span
@@ -125,7 +127,7 @@ function Post({ post }) {
           </button>
         </div>
 
-        <footer className="text-xs text-gray-500 mb-2">
+        <footer className="text-xs text-gray-500 ">
           <span className="mr-5">
             {post.input_datetime.slice(0, 10)} | 조회수: {post.views}
           </span>

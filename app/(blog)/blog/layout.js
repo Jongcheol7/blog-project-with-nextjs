@@ -1,7 +1,8 @@
-export default async function BlogHomeLayout({ children }) {
+export default function BlogLayout({ blog, hotblog }) {
   return (
-    <div className="flex max-w-7xl mx-auto gap-6 px-4 py-8">
-      <main className="flex-1 space-y-6">{children}</main>
-    </div>
+    <>
+      <main className="px-4">{hotblog}</main>
+      <section>{blog}</section>
+    </>
   );
 }

@@ -74,7 +74,7 @@ export default function BlogHomePage() {
   return (
     <div className="flex w-full">
       {/* 좌측 카테고리 사이드바 */}
-      <aside className="w-40 flex-shrink-0 pl-3 mt-2 bg-gray-50 rounded shadow-sm">
+      <aside className="w-50 flex-shrink-0 pl-3 mt-2 bg-gray-50 rounded shadow-sm">
         <h3 className="text-sm font-semibold mb-3">카테고리</h3>
         <BlogListCategory
           categories={categories}
@@ -84,7 +84,7 @@ export default function BlogHomePage() {
       </aside>
 
       {/* 블로그 목록 */}
-      <main className="flex-1 min-w-0 px-4 py-8">
+      <main className="flex-1 min-w-0 px-4 py-3">
         <div>
           {/* <h1 className="text-2xl font-bold text-gray-800">블로그 목록</h1> */}
         </div>

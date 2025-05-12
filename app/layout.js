@@ -6,7 +6,7 @@ export default async function RootLayout({ children, login }) {
   const initialUser = await UserSession();
   return (
     <html lang="en">
-      <body className="px-40">
+      <body className="max-w-7xl mx-auto gap-6 px-4 py-3">
         <Header initialUser={initialUser} />
         <main className="">
           {children}
