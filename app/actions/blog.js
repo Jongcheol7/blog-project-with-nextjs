@@ -7,6 +7,7 @@ import {
   deleteBlogTags,
   deleteTags,
   insertBlog,
+  insertComment,
   insertTags,
   updateBlog,
 } from "@lib/blog-db";
@@ -191,4 +192,42 @@ export async function updatePost(prevState, formData) {
   redirect("/blog");
 
   return { success: true };
+}
+
+export async function createComment(prevState, formData) {
+  const postNo = formData.get("post_no");
+  const userId = formData.get("user_id");
+  const content = formData.get("content");
+
+  if (!postNo) {
+    return {
+      success: false,
+      error: "글 번호가 없습니다.",
+    };
+  }
+  if (!userId) {
+    return {
+      success: false,
+      error: "로그인을 하셔야 합니다.",
+    };
+  }
+  if (!content || content.trim().length === 0) {
+    return {
+      success: false,
+      error: "댓글 내용이 없습니다.",
+    };
+  }
+
+  try {
+    await insertComment({
+      postNo: postNo,
+      userId: userId,
+      content: content,
+    });
+  } catch (err) {
+    console.log("새댓글 작성 실패", err);
+    return NextResponse.json({ error: "새댓글 작성 실패" }, { status: 500 });
+  }
+
+  redirect(`/blog/${postNo}`);
 }

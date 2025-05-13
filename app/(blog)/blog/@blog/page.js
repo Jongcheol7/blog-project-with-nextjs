@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useUserStore } from "@store/UserStore";
 
 export default function BlogHomePage() {
+  console.log("블로그홈화면 페이지");
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
