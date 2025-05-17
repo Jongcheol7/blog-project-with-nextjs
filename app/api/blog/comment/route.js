@@ -1,4 +1,4 @@
-import { selectComments, updateComment } from "@lib/blog-db";
+import { deleteComment, selectComments, updateComment } from "@lib/blog-db";
 import { NextResponse } from "next/server";
 
 // 댓글 조회 로직
@@ -12,7 +12,7 @@ export async function GET() {
   }
 }
 
-// 댓글 수정 로직직
+// 댓글 수정 로직
 export async function PUT(request) {
   const { commentNo, userId, content } = await request.json();
 
@@ -30,11 +30,26 @@ export async function PUT(request) {
     user_id: userId,
     content: content,
   };
-
   try {
     await updateComment(comment);
+    return NextResponse.json({ success: true });
   } catch (err) {
     console.error("댓글 수정 실패 : ", err);
     return NextResponse.json({ error: "댓글 수정 실패" }, { status: 500 });
+  }
+}
+
+// 댓글 삭제 로직
+export async function POST(request) {
+  const { commentNo } = await request.json();
+  if (!commentNo) {
+    return NextResponse.json({ error: "댓글 번호 없음" }, { status: 400 });
+  }
+  try {
+    await deleteComment(commentNo);
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.log("댓글 삭제 실패 : ", err);
+    return NextResponse.json({ error: "댓글 삭제 실패" }, { status: 500 });
   }
 }

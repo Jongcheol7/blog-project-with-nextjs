@@ -224,6 +224,7 @@ export async function createComment(prevState, formData) {
       userId: userId,
       content: content,
     });
+    return { success: true };
   } catch (err) {
     console.log("새댓글 작성 실패", err);
     return NextResponse.json({ error: "새댓글 작성 실패" }, { status: 500 });
