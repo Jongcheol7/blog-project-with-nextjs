@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 // 댓글 저장
 export async function POST(request) {
-  const { userId, content, postNo } = await request.json();
+  const { userId, content, postNo, parentNo } = await request.json();
   console.log("userId : ", userId);
   console.log("content : ", content);
   console.log("postNo : ", postNo);
@@ -21,6 +21,7 @@ export async function POST(request) {
     postNo: postNo,
     userId: userId,
     content: content,
+    parentNo: parentNo || null,
   };
 
   try {
@@ -31,3 +32,4 @@ export async function POST(request) {
     return NextResponse.json({ error: "댓글 저장 실패" }, { status: 500 });
   }
 }
+``;

@@ -2,9 +2,11 @@ import { deleteComment, selectComments, updateComment } from "@lib/blog-db";
 import { NextResponse } from "next/server";
 
 // 댓글 조회 로직
-export async function GET() {
+export async function GET(request) {
   try {
-    const comments = await selectComments();
+    const { searchParams } = new URL(request.url);
+    const postNo = searchParams.get("postNo");
+    const comments = await selectComments(postNo);
     return NextResponse.json(comments);
   } catch (err) {
     console.error("댓글 조회 실패 : ", err);

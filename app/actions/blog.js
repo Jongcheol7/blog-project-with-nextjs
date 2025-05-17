@@ -15,6 +15,7 @@ import { NextResponse } from "next/server";
 import { extractPublicIdsFromMarkdown } from "@util/extractPublicIds";
 
 export default async function createPost(prevState, formData) {
+  const privateYn = formData.get("privateYn");
   const title = formData.get("title");
   const userId = formData.get("userId");
   const content = formData.get("content");
@@ -59,6 +60,7 @@ export default async function createPost(prevState, formData) {
     imageUrl: imageUrl,
     userId: userId,
     categoryId,
+    privateYn: privateYn === "on" ? "Y" : "N",
   });
 
   const postNo = insertResult.lastInsertRowid;
@@ -93,8 +95,10 @@ export default async function createPost(prevState, formData) {
 
 export async function updatePost(prevState, formData) {
   const postNo = formData.get("postNo");
+  const userId = formData.get("userId");
   const title = formData.get("title");
   const content = formData.get("content");
+  const privateYn = formData.get("privateYn");
   const image = formData.get("image");
   const tags = formData.get("tags");
   const categoryId = formData.get("category");
@@ -105,6 +109,9 @@ export async function updatePost(prevState, formData) {
   let errors = [];
   if (!title || title.trim().length === 0) {
     errors.push("Title is required.");
+  }
+  if (!userId || userId.trim().length === 0) {
+    errors.push("UserId is required.");
   }
   if (!content || content.trim().length === 0) {
     errors.push("Content is required.");
@@ -149,14 +156,16 @@ export async function updatePost(prevState, formData) {
   console.log("content : ", content);
   console.log("imageUrl : ", imageUrl);
   console.log("categoryId : ", categoryId);
+  console.log("privateYn : ", privateYn);
   console.log("------------------------");
   await updateBlog({
     postNo,
     title,
     content,
     imageUrl: imageUrl,
-    userId: "jclee",
+    userId,
     categoryId,
+    privateYn: privateYn === "on" ? "Y" : "N",
   });
 
   const tagNames = [

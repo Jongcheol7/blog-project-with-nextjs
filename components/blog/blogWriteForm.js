@@ -35,6 +35,7 @@ export default function BlogWriteForm() {
   const [markdown, setMarkdown] = useState("");
   const [tags, setTags] = useState([]);
   const [uploadedIds, setUploadedIds] = useState([]);
+  const [isPrivate, setIsPrivate] = useState("N");
 
   const { user } = useUserStore();
   console.log("글쓰기 폼 user : ", user);
@@ -64,11 +65,23 @@ export default function BlogWriteForm() {
     <div className="max-w-250 mx-auto mt-10 px-4">
       <h1 className="text-2xl font-bold mb-6">글쓰기</h1>
       <form action={formAction} className="space-y-6">
-        {/* 카테고리 */}
-        <div className="block text-gray-700 mb-3">
-          {/* 클라이언트에서 직접 서버전용 함수를 쓸수 없기에.. 컴포넌트 새로팠음 */}
-          {/* 사실 아래 컴포넌트도 훅을 사용하니 결국 클라이언트 컴포넌트지만 역할분리겸... */}
-          <BlogWriteCategory />
+        <div className="flex items-center gap-3">
+          {/* 카테고리 */}
+          <div className="block text-gray-700 mb-3">
+            {/* 클라이언트에서 직접 서버전용 함수를 쓸수 없기에.. 컴포넌트 새로팠음 */}
+            {/* 사실 아래 컴포넌트도 훅을 사용하니 결국 클라이언트 컴포넌트지만 역할분리겸... */}
+            <BlogWriteCategory />
+          </div>
+          {/* 비밀글여부 */}
+          <label>
+            <input
+              type="checkbox"
+              name="privateYn"
+              checked={isPrivate === "Y"}
+              onChange={(e) => setIsPrivate(e.target.checked ? "Y" : "N")}
+            />
+            비밀글
+          </label>
         </div>
 
         {/* 제목 */}

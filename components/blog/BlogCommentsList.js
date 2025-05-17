@@ -75,7 +75,7 @@ export default function BlogCommentsList({ postNo, user }) {
   return (
     <div className="w-full mx-auto py-10 mt-10">
       <h2 className="text-xl font-bold mb-6 border-b pb-2">댓글</h2>
-      <ul>
+      <ul className="mb-5">
         {comments.map((comment) => (
           <li key={comment.comment_no}>
             <BlogCommentCard
@@ -83,6 +83,8 @@ export default function BlogCommentsList({ postNo, user }) {
               comment={comment}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              postNo={postNo}
+              refreshComments={getAllComments}
             />
           </li>
         ))}

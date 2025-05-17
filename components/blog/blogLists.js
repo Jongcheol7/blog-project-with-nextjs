@@ -56,15 +56,16 @@ function Post({ post }) {
       console.log("좋아요 요청 실패", err);
     }
   };
-  console.log("post", post);
-  console.log("post.like_yn", post.like_yn);
-  console.log("liked", liked);
 
   return (
     <div
       className="flex gap-4"
       onClick={() => {
-        router.push(`/blog/${post.post_no}`);
+        {
+          post.private_yn === "Y" && isUser
+            ? router.push(`/blog/${post.post_no}`)
+            : alert("비밀글 입니다. 로그인한 사람만 볼수 있습니다.");
+        }
       }}
     >
       <div className="w-[200px] h-[140px] relative flex-shrink-0">
@@ -82,9 +83,12 @@ function Post({ post }) {
         <div className="flex justify-between">
           <div className="flex flex-col justify-between">
             <div className="flex-1">
-              <h2 className="text-base font-semibold text-gray-800 mb-1 mt-3">
-                {post.title}
-              </h2>
+              <div className="flex items-center">
+                <h2 className="text-base font-semibold text-gray-800 mb-1 mt-3">
+                  {post.title}
+                </h2>
+                {post.private_yn === "Y" && <span>🔒</span>}
+              </div>
               <p className="text-sm text-gray-600 line-clamp-2 break-all overflow-hidden">
                 {contentPreview}
               </p>

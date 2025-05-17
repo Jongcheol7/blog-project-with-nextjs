@@ -8,6 +8,7 @@ import BlogWriteCategory from "@components/blog/BlogWriteCategory";
 import imageCompression from "browser-image-compression";
 import { updatePost } from "@app/actions/blog";
 import { extractPublicIdsFromMarkdown } from "@util/extractPublicIds";
+import { useUserStore } from "@store/UserStore";
 
 // 마크다운 에디터
 const ToastEditor = dynamic(
@@ -33,10 +34,17 @@ export default function BlogUpdateForm({ post }) {
   const [state, formAction] = useActionState(updatePost, {});
   const editorRef = useRef();
   const [markdown, setMarkdown] = useState(post.content);
-  const [tags, setTags] = useState(post.TAGS.split(","));
+  const [tags, setTags] = useState(post.tags.split(","));
   const [uploadedIds, setUploadedIds] = useState(() => {
     return extractPublicIdsFromMarkdown(post.content);
   });
+  const [isPrivate, setIsPrivate] = useState(
+    post.private_yn === "Y" ? "Y" : "N"
+  );
+
+  const { user } = useUserStore();
+  console.log("수정폼에서의 user", user);
+  const userId = user.id;
 
   console.log("글수정 화면 진입 -----");
   console.log(post);
@@ -66,11 +74,24 @@ export default function BlogUpdateForm({ post }) {
       <form action={formAction} className="space-y-6">
         {/* 글번호 */}
         <input type="hidden" value={post.post_no} name="postNo" />
-        {/* 카테고리 */}
-        <div className="block text-gray-700 mb-3">
-          {/* 클라이언트에서 직접 서버전용 함수를 쓸수 없기에.. 컴포넌트 새로팠음 */}
-          {/* 사실 아래 컴포넌트도 훅을 사용하니 결국 클라이언트 컴포넌트지만 역할분리겸... */}
-          <BlogWriteCategory categoryId={post.category_id} />
+        <input type="hidden" value={userId} name="userId" />
+        <div className="flex items-center gap-3">
+          {/* 카테고리 */}
+          <div className="block text-gray-700 mb-3">
+            {/* 클라이언트에서 직접 서버전용 함수를 쓸수 없기에.. 컴포넌트 새로팠음 */}
+            {/* 사실 아래 컴포넌트도 훅을 사용하니 결국 클라이언트 컴포넌트지만 역할분리겸... */}
+            <BlogWriteCategory categoryId={post.category_id} />
+          </div>
+          {/* 비밀글여부 */}
+          <label>
+            <input
+              type="checkbox"
+              name="privateYn"
+              checked={isPrivate === "Y"}
+              onChange={(e) => setIsPrivate(e.target.checked ? "Y" : "N")}
+            />
+            비밀글
+          </label>
         </div>
 
         {/* 제목 */}
