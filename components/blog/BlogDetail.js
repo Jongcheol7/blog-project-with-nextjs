@@ -30,7 +30,7 @@ export default function BlogDetail({ post, user }) {
   }, [post.post_no]);
 
   return (
-    <div className="max-w-3xl mx-auto py-10 px-4">
+    <div className="">
       {/* 뒤로가기 */}
       <div className="mt-10 flex gap-2 justify-end">
         {/* 목록으로 돌아가기 버튼 */}

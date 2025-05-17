@@ -1,7 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import "@toast-ui/editor/dist/toastui-editor.css";
-import { forwardRef, useImperativeHandle, useRef } from "react";
+import { forwardRef, Suspense, useImperativeHandle, useRef } from "react";
 
 const Editor = dynamic(
   () => import("@toast-ui/react-editor").then((mod) => mod.Editor),

@@ -61,7 +61,7 @@ export default function BlogWriteForm() {
   };
 
   return (
-    <div className="max-w-200 mx-auto mt-10 px-4">
+    <div className="max-w-250 mx-auto mt-10 px-4">
       <h1 className="text-2xl font-bold mb-6">글쓰기</h1>
       <form action={formAction} className="space-y-6">
         {/* 카테고리 */}

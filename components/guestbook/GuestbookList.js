@@ -11,6 +11,7 @@ export default function GuestbookList() {
   const [secretYn, setSecretYn] = useState("N");
   const { user } = useUserStore();
 
+  // 방명록 조회
   const getAllLists = async () => {
     const res = await fetch("/api/guestbook");
     const data = await res.json();
@@ -21,7 +22,7 @@ export default function GuestbookList() {
     getAllLists();
   }, []);
 
-  // 방명록 저장장
+  // 방명록 저장
   const handleSaveClick = async () => {
     const content = editorRef.current.getContent();
     const res = await fetch("/api/guestbook/save", {

@@ -1,8 +1,7 @@
 import { selectBlog } from "@lib/blog-db";
 import UserSession from "@lib/UserSession";
 import BlogDetail from "@components/blog/BlogDetail";
-import BlogComments from "@components/blog/BlogComments";
-import { Suspense } from "react";
+import BlogCommentsList from "@components/blog/BlogCommentsList";
 
 export default async function BlogPostDetail({ params }) {
   console.log("블로그 디테일 페이지");
@@ -11,9 +10,9 @@ export default async function BlogPostDetail({ params }) {
   const user = await UserSession();
 
   return (
-    <>
+    <div className="max-w-250 mx-auto mt-10 px-4">
       <BlogDetail post={post} user={user} />
-      <BlogComments postNo={postNo} user={user} />
-    </>
+      <BlogCommentsList postNo={postNo} user={user} />
+    </div>
   );
 }
