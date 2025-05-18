@@ -15,7 +15,7 @@ export default function LoginPage() {
               href="/api/auth/kakao"
               className="bg-yellow-500 text-white px-4 py-2 rounded"
             >
-              KakaoTalk으으로 로그인
+              KakaoTalk으로 로그인
             </a>
           </div>
         </div>

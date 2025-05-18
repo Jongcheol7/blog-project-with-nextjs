@@ -40,7 +40,16 @@ export default function BlogDetail({ post, user }) {
         >
           ← 목록으로
         </Link>
-        {/* 수정, 삭제제 버튼 */}
+        <button
+          onClick={() => {
+            navigator.clipboard.writeText(window.location.href);
+            alert("링크가 복사되었습니다!");
+          }}
+          className="bg-yellow-100 border border-red-400 text-red-600 text-sm px-2 py-1 rounded hover:bg-yellow-200 transition"
+        >
+          🔗 링크 복사
+        </button>
+        {/* 수정, 삭제 버튼 */}
         {post.user_id === user?.id && (
           <>
             <Link

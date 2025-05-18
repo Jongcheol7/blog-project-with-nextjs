@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import NavLink from "@common/NavLink";
 import { useUserStore } from "@store/UserStore";
+import { Router } from "next/router";
 
 export default function Header({ initialUser }) {
   const { user, setUser, logout } = useUserStore();
@@ -27,6 +28,9 @@ export default function Header({ initialUser }) {
   const isAdmin = user?.isAdmin ? true : false;
   const isUser = user === null ? false : true;
 
+  // 닉네임 가져오기
+  const nickName = user?.nickName;
+
   const onHandleDarkMode = () => {
     setIsDark((prev) => !prev);
   };
@@ -40,6 +44,17 @@ export default function Header({ initialUser }) {
 
       <nav className="flex gap-4 items-center">
         <ul className="flex gap-8 text-lg font-semibold">
+          {isUser && (
+            <li>
+              <p>
+                {user.nickName === null ? user.id : user.nickName}{" "}
+                <Link href={"/nickname"} className="hover:text-green-800">
+                  ⚙️
+                </Link>{" "}
+                님
+              </p>
+            </li>
+          )}
           <li>
             <NavLink href="/blog">Blog</NavLink>
           </li>
