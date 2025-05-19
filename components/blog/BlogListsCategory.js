@@ -5,13 +5,14 @@ export default function BlogListCategory({
   handleFilterPosts,
 }) {
   const blogListFilter = (categoryId) => {
+    console.log("선택된 카테고리 아이디 : ", categoryId);
     const newFiltered =
       categoryId === ""
         ? posts
-        : posts.filter((post) => post.catetory_id === categoryId);
+        : posts.filter((post) => post.category_id === categoryId);
     handleFilterPosts(newFiltered);
   };
-
+  console.log("카테고리로 넘어온 포스트 정보 : ", posts);
   return (
     <ul>
       <li>

@@ -133,22 +133,3 @@ export default function GuestbookCard({ user, guestbook, onEdit, onDelete }) {
     </>
   );
 }
-
-// {showActions && (
-//               <div className="flex gap-2">
-//                 <button
-//                   onClick={onEdit}
-//                   className="px-3 py-1 text-xs bg-blue-500 text-white rounded-3xl
-//                        hover:bg-blue-600 transition"
-//                 >
-//                   수정
-//                 </button>
-//                 <button
-//                   onClick={() => onDelete(guestbook.guestbook_no)}
-//                   className="px-3 py-1 text-xs bg-red-500 text-white rounded-3xl
-//                        hover:bg-red-600 transition"
-//                 >
-//                   삭제
-//                 </button>
-//               </div>
-//             )}

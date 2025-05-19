@@ -48,8 +48,9 @@ export default function BlogHomePage() {
     fetchPosts();
   }, [user]);
 
-  // 카테고리 클릭에 의한 필터터
+  // 카테고리 클릭에 의한 필터
   const handleFilterPosts = (filterPosts) => {
+    console.log("카테고리 클릭에 의한 필터 : ", filterPosts);
     setFilteredPosts(filterPosts);
     searchInputRef.current.value = "";
   };
@@ -76,7 +77,7 @@ export default function BlogHomePage() {
     <div className="flex w-full">
       {/* 좌측 카테고리 사이드바 */}
       <aside className="w-50 flex-shrink-0 pl-3 mt-2 bg-gray-50 rounded shadow-sm">
-        <h3 className="text-sm font-semibold mb-3">카테고리</h3>
+        <h3 className="text-2xl font-semibold mb-3">🗂️Categories</h3>
         <BlogListCategory
           categories={categories}
           posts={posts}

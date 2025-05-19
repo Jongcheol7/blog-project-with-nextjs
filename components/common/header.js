@@ -60,7 +60,7 @@ export default function Header({ initialUser }) {
           </li>
           <li>
             <NavLink href="/guest" className="hover:text-green-800">
-              Guest
+              Guestbook
             </NavLink>
           </li>
           <li>
@@ -71,7 +71,7 @@ export default function Header({ initialUser }) {
           {isAdmin && (
             <li>
               <NavLink href="/manager" className="hover:text-green-800">
-                관리자
+                Manager
               </NavLink>
             </li>
           )}

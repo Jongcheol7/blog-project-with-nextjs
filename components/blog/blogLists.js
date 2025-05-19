@@ -4,6 +4,8 @@ import removeMd from "remove-markdown";
 import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useUserStore } from "@store/UserStore";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function BlogLists({ posts }) {
   return (
@@ -64,7 +66,9 @@ function Post({ post }) {
         {
           post.private_yn === "Y" && isUser
             ? router.push(`/blog/${post.post_no}`)
-            : alert("비밀글 입니다. 로그인한 사람만 볼수 있습니다.");
+            : post.private_yn === "Y"
+            ? alert("비밀글 입니다. 로그인한 사람만 볼수 있습니다.")
+            : router.push(`/blog/${post.post_no}`);
         }
       }}
     >
@@ -89,9 +93,19 @@ function Post({ post }) {
                 </h2>
                 {post.private_yn === "Y" && <span>🔒</span>}
               </div>
-              <p className="text-sm text-gray-600 line-clamp-2 break-all overflow-hidden">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  p: (props) => (
+                    <p
+                      className="text-sm text-gray-600 line-clamp-2 break-all overflow-hidden"
+                      {...props}
+                    />
+                  ),
+                }}
+              >
                 {contentPreview}
-              </p>
+              </ReactMarkdown>
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
               {post.tags?.split(",").map((tag) => (
