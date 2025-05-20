@@ -61,7 +61,7 @@ function Post({ post }) {
 
   return (
     <div
-      className="flex gap-4"
+      className="flex gap-4 border-b border-gray-300 hover:bg-gray-100 py-2 hover:shadow-xl transition-all duration-300 cursor-pointer"
       onClick={() => {
         {
           post.private_yn === "Y" && isUser
@@ -121,7 +121,7 @@ function Post({ post }) {
 
           {/* ❤️ 좋아요 버튼 */}
           <button
-            className={`group ml-3 mt-2 flex items-center gap-1 text-sm transition 
+            className={`group ml-3 mt-2 flex items-center gap-1 text-sm transition w-20 shrink-0
               ${
                 liked === "Y"
                   ? "text-red-500"

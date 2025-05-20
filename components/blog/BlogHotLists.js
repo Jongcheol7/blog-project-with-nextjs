@@ -43,7 +43,7 @@ export default function BlogHotLists() {
       {posts.slice(0, maxVisible).map((post) => (
         <div
           key={post.post_no}
-          className="bg-amber-50 dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-4"
+          className="bg-amber-50 hover:bg-amber-100 dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-4  cursor-pointer"
           onClick={() => {
             {
               post.private_yn === "Y" && isUser

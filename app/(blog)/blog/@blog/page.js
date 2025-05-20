@@ -76,8 +76,8 @@ export default function BlogHomePage() {
   return (
     <div className="flex w-full">
       {/* 좌측 카테고리 사이드바 */}
-      <aside className="w-50 flex-shrink-0 pl-3 mt-2 bg-gray-50 rounded shadow-sm">
-        <h3 className="text-2xl font-semibold mb-3">🗂️Categories</h3>
+      <aside className="w-50 flex-shrink-0 pl-3 mt-2 bg-gray-50 rounded">
+        <h3 className="text-xl font-semibold mb-3">🗂️Categories</h3>
         <BlogListCategory
           categories={categories}
           posts={posts}
@@ -90,7 +90,7 @@ export default function BlogHomePage() {
         <div>
           {/* <h1 className="text-2xl font-bold text-gray-800">블로그 목록</h1> */}
         </div>
-        <div className="flex items-center gap-2 mb-6 justify-between">
+        <div className="flex items-center gap-2 mb-2 justify-between border-b border-gray-300 pb-2">
           <div className="flex gap-1">
             <select
               ref={searchTypeRef}
@@ -116,7 +116,7 @@ export default function BlogHomePage() {
           {isAdmin && (
             <Link
               href="/blog-write"
-              className="bg-yellow-100 border border-red-400 text-red-600 text-sm px-1 py-1 rounded hover:bg-yellow-200 transition"
+              className="bg-amber-50 border border-gray-300 text-red-600 text-sm px-1 py-1 rounded hover:bg-yellow-200 transition"
             >
               ✍ 새글 작성
             </Link>
