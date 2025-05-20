@@ -7,23 +7,17 @@ import { useUserStore } from "@store/UserStore";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-export default function BlogLists({ posts }) {
-  return (
-    <ul>
-      {posts.length === 0 ? (
-        <p className="text-gray-500 text-sm">게시글이 없습니다.</p>
-      ) : (
-        posts.map((post) => (
-          <li key={post.post_no} className="mb-3">
-            <Post post={post} />
-          </li>
-        ))
-      )}
-    </ul>
+export default function BlogLists({ posts, isMobile }) {
+  return posts.length === 0 ? (
+    <p className="text-gray-500 text-sm">게시글이 없습니다.</p>
+  ) : (
+    posts.map((post) => (
+      <Post key={post.post_no} post={post} isMobile={isMobile} />
+    ))
   );
 }
 
-function Post({ post }) {
+function Post({ post, isMobile }) {
   // Link 처럼 페이지 이동하는 hook
   const router = useRouter();
   // content에 마크다운을 제거 하는 기능..
@@ -61,96 +55,101 @@ function Post({ post }) {
 
   return (
     <div
-      className="flex gap-4 border-b border-gray-300 hover:bg-gray-100 py-2 hover:shadow-xl transition-all duration-300 cursor-pointer"
+      className={`${
+        isMobile
+          ? "flex flex-col border-b border-gray-300 py-4 gap-2"
+          : "flex gap-4 border-b border-gray-300 py-4"
+      } hover:bg-gray-100 hover:shadow-md transition-all cursor-pointer`}
       onClick={() => {
-        {
-          post.private_yn === "Y" && isUser
-            ? router.push(`/blog/${post.post_no}`)
-            : post.private_yn === "Y"
-            ? alert("비밀글 입니다. 로그인한 사람만 볼수 있습니다.")
-            : router.push(`/blog/${post.post_no}`);
+        if (post.private_yn === "Y" && !isUser) {
+          alert("비밀글 입니다. 로그인한 사람만 볼 수 있습니다.");
+        } else {
+          router.push(`/blog/${post.post_no}`);
         }
       }}
     >
-      <div className="w-[200px] h-[140px] relative flex-shrink-0">
+      {/* 이미지 */}
+      <div
+        className={`relative ${
+          isMobile ? "w-full h-[180px]" : "w-[200px] h-[140px] flex-shrink-0"
+        }`}
+      >
         <Image
-          src={`${post.image_url}?f_auto,q_auto` || "/placeholder-img.png"}
+          src={post.image_url || "/placeholder-img.png"}
           alt={post.title || "No Image"}
           fill
-          sizes="200px"
+          sizes="(max-width: 640px) 100vw, 200px"
           priority
           className="object-cover rounded-md"
         />
       </div>
 
-      <div className="flex-1 flex flex-col">
-        <div className="flex justify-between">
-          <div className="flex flex-col justify-between">
-            <div className="flex-1">
-              <div className="flex items-center">
-                <h2 className="text-base font-semibold text-gray-800 mb-1 mt-3">
-                  {post.title}
-                </h2>
-                {post.private_yn === "Y" && <span>🔒</span>}
-              </div>
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  p: (props) => (
-                    <p
-                      className="text-sm text-gray-600 line-clamp-2 break-all overflow-hidden"
-                      {...props}
-                    />
-                  ),
-                }}
-              >
-                {contentPreview}
-              </ReactMarkdown>
-            </div>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {post.tags?.split(",").map((tag) => (
-                <span
-                  key={tag}
-                  className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full"
-                >
-                  #{tag}
-                </span>
-              ))}
-            </div>
+      {/* 내용 */}
+      <div className="flex-1 flex flex-col justify-between min-w-[150px]">
+        {/* 상단: 제목 + 내용 + 태그 */}
+        <div>
+          {/* 제목 */}
+          <div className="flex items-center mb-1 mt-2">
+            <h2 className="text-base font-semibold text-gray-800 mr-2">
+              {post.title}
+            </h2>
+            {post.private_yn === "Y" && <span>🔒</span>}
           </div>
 
-          {/* ❤️ 좋아요 버튼 */}
-          <button
-            className={`group ml-3 mt-2 flex items-center gap-1 text-sm transition w-20 shrink-0
-              ${
-                liked === "Y"
-                  ? "text-red-500"
-                  : "text-gray-400 hover:text-red-400"
-              }`}
-            onClick={(e) => {
-              e.stopPropagation(); // 상위 div 클릭 방지
-              if (!isUser) {
-                alert("로그인 후 사용 가능합니다.");
-                return;
-              }
-              handleLikeUpdate();
+          {/* 내용 미리보기 */}
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              p: (props) => (
+                <p
+                  className="text-sm text-gray-600 line-clamp-2 break-all"
+                  {...props}
+                />
+              ),
             }}
           >
-            <Heart
-              className={`w-5 h-5 transition-transform group-hover:scale-110 ${
-                liked === "Y" ? "fill-red-500" : "fill-none"
-              }`}
-            />
-            {liked === "Y" ? "좋아요!" : "좋아요"}
-          </button>
+            {contentPreview}
+          </ReactMarkdown>
+
+          {/* 태그 */}
+          <div className="flex flex-wrap gap-2 mt-2">
+            {post.tags?.split(",").map((tag) => (
+              <span
+                key={tag}
+                className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full"
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
         </div>
 
-        <footer className="text-xs text-gray-500 ">
-          <span className="mr-5">
+        {/* 하단: 좋아요 + 날짜 */}
+        <div className="flex justify-between items-center mt-3">
+          <span className="text-xs text-gray-500">
             {post.input_datetime.slice(0, 10)} | 조회수: {post.views}
           </span>
-        </footer>
+        </div>
       </div>
+
+      {/* 좋아요 버튼 (PC에서만 우측에 붙임, 모바일에서는 하단에 정렬될 것) */}
+      <button
+        className={`group flex items-center gap-1 text-sm transition min-w-20 ${
+          liked === "Y" ? "text-red-500" : "text-gray-400 hover:text-red-400"
+        } ${isMobile ? "mt-3 self-start" : ""}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (!isUser) return alert("로그인 후 사용 가능합니다.");
+          handleLikeUpdate();
+        }}
+      >
+        <Heart
+          className={`w-5 h-5 transition-transform group-hover:scale-110 ${
+            liked === "Y" ? "fill-red-500" : "fill-none"
+          }`}
+        />
+        {liked === "Y" ? "좋아요!" : "좋아요"}
+      </button>
     </div>
   );
 }

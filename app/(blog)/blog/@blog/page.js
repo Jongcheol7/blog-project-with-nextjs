@@ -16,6 +16,21 @@ export default function BlogHomePage() {
   // 세션값 가져와서 관리자 여부인지, 세션이 있는지 판단
   const isAdmin = user?.isAdmin ? true : false;
   const isUser = user === null ? false : true;
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 창크기에 따른 인기글 보여주는 갯수 조절하기.
+  useEffect(() => {
+    const updateMobileDisplay = () => {
+      if (window.innerWidth < 800) {
+        setIsMobile(true); //모바일
+      } else {
+        setIsMobile(false);
+      }
+    };
+    updateMobileDisplay();
+    window.addEventListener("resize", updateMobileDisplay);
+    return () => window.addEventListener("resize", updateMobileDisplay);
+  }, []);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -74,14 +89,20 @@ export default function BlogHomePage() {
   };
 
   return (
-    <div className="flex w-full">
+    // <div className="flex w-full">
+    <div className={`flex w-full ${isMobile ? "flex-col" : ""}`}>
       {/* 좌측 카테고리 사이드바 */}
-      <aside className="w-50 flex-shrink-0 pl-3 mt-2 bg-gray-50 rounded">
+      <aside
+        className={`${
+          isMobile ? "" : "w-50"
+        } flex-shrink-0 pl-3 mt-2 bg-gray-50 rounded`}
+      >
         <h3 className="text-xl font-semibold mb-3">🗂️Categories</h3>
         <BlogListCategory
           categories={categories}
           posts={posts}
           handleFilterPosts={handleFilterPosts}
+          isMobile={isMobile}
         />
       </aside>
 
@@ -104,11 +125,11 @@ export default function BlogHomePage() {
               name="search"
               ref={searchInputRef}
               placeholder="검색어를 입력하세요"
-              className="border border-gray-300 rounded px-3 py-1 text-sm w-60 focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="border border-gray-300 rounded px-3 py-1 text-sm w-60 min-w-40 focus:outline-none focus:ring-2 focus:ring-green-400"
             />
             <button
               onClick={handleSearchFilter}
-              className="bg-green-700 text-white text-sm px-4 py-1 rounded hover:bg-green-600"
+              className="bg-green-700 text-white text-sm px-4 py-1 min-w-15 rounded hover:bg-green-600"
             >
               검색
             </button>
@@ -116,13 +137,13 @@ export default function BlogHomePage() {
           {isAdmin && (
             <Link
               href="/blog-write"
-              className="bg-amber-50 border border-gray-300 text-red-600 text-sm px-1 py-1 rounded hover:bg-yellow-200 transition"
+              className="bg-amber-50 border border-gray-300 min-w-25 text-red-600 text-sm px-1 py-1 rounded hover:bg-yellow-200 transition"
             >
               ✍ 새글 작성
             </Link>
           )}
         </div>
-        <BlogLists posts={filteredPosts} />
+        <BlogLists posts={filteredPosts} isMobile={isMobile} />
       </main>
     </div>
   );

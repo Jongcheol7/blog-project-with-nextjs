@@ -6,6 +6,7 @@ export default function BlogListCategory({
   categories,
   posts,
   handleFilterPosts,
+  isMobile,
 }) {
   const [selectedId, setSelectedId] = useState("");
 
@@ -25,8 +26,12 @@ export default function BlogListCategory({
   };
 
   return (
-    <ul className="bg-white shadow rounded-xl p-4 w-full">
-      <li>
+    <ul
+      className={`bg-white shadow rounded-xl p-4 ${
+        isMobile ? "flex flex-wrap gap-2 w-full" : "w-full"
+      }`}
+    >
+      <li className="mt-1">
         <button
           onClick={() => blogListFilter("")}
           className={`w-full text-left px-4 py-2 rounded-lg transition 
