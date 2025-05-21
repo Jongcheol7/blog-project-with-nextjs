@@ -2,16 +2,19 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import NavLink from "@common/NavLink";
-import { useUserStore } from "@store/UserStore";
+import { useMobileStore, useUserStore } from "@store/UserStore";
 import { Router } from "next/router";
 
 export default function Header({ initialUser }) {
   const { user, setUser, logout } = useUserStore();
   const [isDark, setIsDark] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  //  const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // 창크기에 따른 보여주는 갯수 조절하기.
+  const setIsMobile = useMobileStore((state) => state.setIsMobile);
+  const isMobile = useMobileStore((state) => state.isMobile);
+
+  // 창크기에 따른 인기글 보여주는 갯수 조절하기.
   useEffect(() => {
     const updateMobileDisplay = () => {
       if (window.innerWidth < 800) {
@@ -57,7 +60,10 @@ export default function Header({ initialUser }) {
         isMobile ? "justify-center" : "justify-between"
       }`}
     >
-      <Link href={"/"}>
+      <Link
+        href={"/"}
+        className={`transition duration-700 ${isMenuOpen ? "hidden" : ""}`}
+      >
         {/* <Image src="/logo2.png" width={70} height={70} alt="Logo" priority /> */}
         <p className="text-2xl font-bold">종철.log</p>
       </Link>
@@ -126,14 +132,60 @@ export default function Header({ initialUser }) {
         </nav>
       )}
       {isMobile && (
-        <div className="text-right">
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="absolute top-4 right-6 text-2xl font-bold z-50"
+        >
+          {isMenuOpen ? "✖️" : "☰"}
+        </button>
+      )}
+      {isMobile && isMenuOpen && (
+        <nav className="mt-4 space-y-2 text-center text-lg font-medium flex flex-col">
+          {isUser && (
+            <p>
+              {nickName || user.id}{" "}
+              <Link href="/nickname" className="hover:text-green-800">
+                ⚙️
+              </Link>{" "}
+              님
+            </p>
+          )}
+          <NavLink href="/blog" className="block hover:text-green-800">
+            Blog
+          </NavLink>
+          <NavLink href="/guest" className="block hover:text-green-800">
+            Guestbook
+          </NavLink>
+          <NavLink href="/about" className="block hover:text-green-800">
+            About
+          </NavLink>
+          {isAdmin && (
+            <NavLink href="/manager" className="block hover:text-green-800">
+              Manager
+            </NavLink>
+          )}
+          {isUser ? (
+            <button
+              onClick={() => {
+                logout();
+                window.location.href = "/api/auth/logout";
+              }}
+              className="block hover:text-green-800"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link href="/login" className="block hover:text-green-800">
+              Login
+            </Link>
+          )}
           <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="text-2xl font-bold"
+            onClick={onHandleDarkMode}
+            className="mt-2 block mx-auto text-base font-semibold px-2 py-1 rounded hover:bg-gray-100 dark:bg-white dark:text-black"
           >
-            ☰
+            {isDark ? "☀️" : "🌙"}
           </button>
-        </div>
+        </nav>
       )}
     </header>
   );

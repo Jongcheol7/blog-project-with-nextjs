@@ -20,6 +20,7 @@ export default function BlogHotLists() {
       }
     };
     selectHotBlogLists();
+    console.log(posts);
   }, []);
 
   // 창크기에 따른 인기글 보여주는 갯수 조절하기.

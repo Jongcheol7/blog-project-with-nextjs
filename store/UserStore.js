@@ -5,3 +5,8 @@ export const useUserStore = create((set) => ({
   setUser: (user) => set({ user }),
   logout: () => set({ user: null }),
 }));
+
+export const useMobileStore = create((set) => ({
+  isMobile: false,
+  setIsMobile: (value) => set({ isMobile: value }),
+}));

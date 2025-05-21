@@ -48,9 +48,13 @@ export async function DELETE(request) {
   }
 
   try {
-    await deleteTags(postNo);
+    console.log("태그 삭제전");
     await deleteBlogTags(postNo);
+    console.log("블로그-태그 삭제 완료");
+    await deleteTags(postNo);
+    console.log("태그 삭제 완료");
     await deleteBlog(postNo);
+    console.log("블로그 삭제 완료");
   } catch (err) {
     console.log("블로그 글삭제 오류 : ", err);
     return NextResponse.json({ error: "블로그 글삭제 오류" }, { status: 500 });

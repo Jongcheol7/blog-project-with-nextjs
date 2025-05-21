@@ -3,7 +3,7 @@ import Link from "next/link";
 import BlogLists from "@components/blog/BlogLists";
 import BlogListCategory from "@components/blog/BlogListsCategory";
 import { useEffect, useRef, useState } from "react";
-import { useUserStore } from "@store/UserStore";
+import { useMobileStore, useUserStore } from "@store/UserStore";
 
 export default function BlogHomePage() {
   console.log("블로그홈화면 페이지");
@@ -16,21 +16,7 @@ export default function BlogHomePage() {
   // 세션값 가져와서 관리자 여부인지, 세션이 있는지 판단
   const isAdmin = user?.isAdmin ? true : false;
   const isUser = user === null ? false : true;
-  const [isMobile, setIsMobile] = useState(false);
-
-  // 창크기에 따른 인기글 보여주는 갯수 조절하기.
-  useEffect(() => {
-    const updateMobileDisplay = () => {
-      if (window.innerWidth < 800) {
-        setIsMobile(true); //모바일
-      } else {
-        setIsMobile(false);
-      }
-    };
-    updateMobileDisplay();
-    window.addEventListener("resize", updateMobileDisplay);
-    return () => window.addEventListener("resize", updateMobileDisplay);
-  }, []);
+  const isMobile = useMobileStore((state) => state.isMobile);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -111,7 +97,11 @@ export default function BlogHomePage() {
         <div>
           {/* <h1 className="text-2xl font-bold text-gray-800">블로그 목록</h1> */}
         </div>
-        <div className="flex items-center gap-2 mb-2 justify-between border-b border-gray-300 pb-2">
+        <div
+          className={`flex items-center gap-2 mb-2 justify-between border-b border-gray-300 pb-2 ${
+            isMobile ? "flex-col" : ""
+          }`}
+        >
           <div className="flex gap-1">
             <select
               ref={searchTypeRef}
